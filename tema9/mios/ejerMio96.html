@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ejercicio 91 mio</title>
+    <script src="recursos/jquery-3.5.1.js"></script>
+    <style type="text/css">
+        div {
+            border: 1px solid black;
+            width: 300px;
+            height: auto;
+            margin: 50px;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        select {
+            width: 250px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <select name="categoria" id="categoria">
+        <option selected value="todos">Todos</option>
+        <option value="españa">España</option>
+        <option value="italia">Italia</option>
+        <option value="francia">Francia</option>
+        <option value="alemania">Alemania</option>
+        <option value="portugal">Portugal</option>
+    </select>
+    <div class="lista">
+        <ul>
+            <li class="item españa">Madrid</li>
+            <li class="item españa">Valencia</li>
+            <li class="item españa">Barcelona</li>
+            <li class="item francia">Paris</li>
+            <li class="item francia">Nice</li>
+            <li class="item italia">Roma</li>
+            <li class="item italia">Milan</li>
+            <li class="item alemania">Berlin</li>
+            <li class="item alemania">Munich</li>
+            <li class="item portugal">Lisboa</li>
+            <li class="item portugal">Oporto</li>
+            <li class="item portugal">Coimbra</li>
+
+        </ul>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#categoria").change(function () {
+                var seleccionado = $("#categoria").val();
+                console.log("He seleccionado: " + seleccionado);
+                if (seleccionado == "todos") {
+                    $("li").show();
+                } else {
+                    $("li").hide();
+                    $("." + seleccionado).show();
+                }
+
+            });
+        })
+    </script>
+</body>
+
+</html>
