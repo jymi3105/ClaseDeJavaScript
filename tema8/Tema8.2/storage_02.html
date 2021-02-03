@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>storage_02 - localStorage: removeItem, clear</title>
+</head>
+
+<body>
+	<h1>storage_02 - localStorage: removeItem, clear</h1>
+	<hr />
+
+	Clave<br />
+	<input type="text" id="clave" /><button onclick="eliminarPar();">Eliminar par clave-valor</button>
+
+	<br /><br />
+
+	<button onclick="eliminarTodos();">Borrar todo el almacenamiento</button>
+
+	<script type="text/javascript">
+
+		function eliminarPar() {
+			//Elimina el registro de la clave que le pusimos en el input
+			let clave = localStorage.getItem(document.getElementById("clave").value);
+			if (clave!=null) {
+				localStorage.removeItem(document.getElementById("clave").value);
+			} else{
+				alert("no existe valor asociado a: " + document.getElementById("clave").value);
+			}
+			
+		}
+
+		function eliminarTodos() {
+			//Elimina todos los registros del localStorage
+			if(localStorage.length==0){
+				alert("No hay nada que borrar");
+			}
+			console.log(localStorage);
+			localStorage.clear();
+		}
+
+	</script>
+</body>
+
+</html>

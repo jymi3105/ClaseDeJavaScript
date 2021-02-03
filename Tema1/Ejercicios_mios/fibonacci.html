@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio de arrays en clase</title>
+</head>
+
+<body>
+    <h1>parametro rest</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+    
+        var fibonacci = [0, 1];
+
+
+
+        function sumaFib() {
+            pos = 1;
+            suma = 0;
+            while (pos < fibonacci.length) {
+                suma += fibonacci[(fibonacci.length - pos)];
+                pos++;
+            }
+            return suma;
+        }
+
+        function total(n) {
+            while (fibonacci.length < n) {
+                fibonacci.push(sumaFib());
+            }
+            console.log(fibonacci);
+        }
+        total(100);
+
+
+        console.log("La suma total del array fibonacci es de: " + sumaFib() + ", con un tamaño de " + fibonacci.length);
+
+    </script>
+</body>
+
+</html>

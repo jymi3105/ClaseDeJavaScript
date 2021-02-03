@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba con el animate</title>
+    <link rel="icon" type="image/x-icon" href="recursos/favicon.ico">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style type="text/css">
+        div {
+            position: relative;
+            border: 1px solid black;
+            width: 120px;
+            height: 30px;
+            font: 0.75em Arial;
+            text-align: center;
+            background-color: yellow;
+            margin: 20px 0px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="iniciar">Iniciar la animacion</button>
+    <div id="objeto">Prubas con animate</div>
+
+    <script>
+        $(function () {
+            $("#iniciar").click(function () {
+
+                $("#objeto").animate({ left: 150, width: "200px", opacity: 0.25 }, 1500);
+                $("#objeto").animate({ fontSize: "24px" }, 1000);
+                $("#objeto").animate({
+                    backgroundColor: "red",
+                    color: "white",
+                    width: 240
+                }, 600)
+                $("#objeto").animate({ borderLeftWidth: "25px" }, 1000).animate({ opacity: 1 }, 1000);
+                $("#objeto").animate({
+                    left: 0, width: "120px",
+                    backgroundColor: "yellow",
+                    color: "black",
+                    borderLeftWidth: "1px",
+                    fontSize: "10px"
+                }, 1000);
+            })
+        });
+    </script>
+
+</body>
+
+</html>

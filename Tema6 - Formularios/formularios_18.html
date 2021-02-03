@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>formularios_18 - Ejercicio: Juego del ahorcado</title>
+	<style>
+		div {
+			border: 2px solid black;
+			padding: 1cm;
+		}
+
+		#cuadropalabra {
+			font-size: 1cm;
+		}
+
+		#letrasdichas {
+			color: red;
+		}
+
+		#intentos {
+			color: green;
+		}
+	</style>
+</head>
+
+<body onload="iniciar();">
+	<h1>formularios_18 - Ejercicio: Juego del ahorcado</h1>
+	<hr />
+
+	<div id="cuadrojugador1">
+		<h1>JUGADOR 1</h1>
+		Introduce una palabra<br />
+		<input type="password" id="palabraorigen" />
+		<br />
+		<button onclick="IntroducirPalabra();">Introducir palabra</button>
+	</div>
+
+	<hr />
+
+	<div id="cuadropalabra">
+		<p id="intentos"></p>
+		<hr />
+		<p id="letrasdichas"></p>
+		<hr />
+		<p id="oculta"></p>
+	</div>
+
+	<hr />
+
+	<div id="cuadrojugador2">
+		<h1>JUGADOR 2</h1>
+		Selecciona una letra<br />
+		<select id="letra">
+			<option id="A">A</option>
+			<option id="B">B</option>
+			<option id="C">C</option>
+			<option id="D">D</option>
+			<option id="E">E</option>
+			<option id="F">F</option>
+			<option id="G">G</option>
+			<option id="H">H</option>
+			<option id="I">I</option>
+			<option id="J">J</option>
+			<option id="K">K</option>
+			<option id="L">L</option>
+			<option id="M">M</option>
+			<option id="N">N</option>
+			<option id="O">O</option>
+			<option id="P">P</option>
+			<option id="Q">Q</option>
+			<option id="R">R</option>
+			<option id="S">S</option>
+			<option id="T">T</option>
+			<option id="U">U</option>
+			<option id="V">V</option>
+			<option id="W">W</option>
+			<option id="X">X</option>
+			<option id="Y">Y</option>
+			<option id="Z">Z</option>
+		</select><br />
+		<button id="botondecirletra" onclick="DecirLetra();">Decir letra</button>
+
+		<br /><br />
+
+		Introduce tu solución
+		<input type="text" id="palabrasolucion" /><br />
+		<button id="botonresolver" onclick="Resolver();">Resolver</button>
+	</div>
+
+
+	<script type="text/javascript">
+
+		//Esta va a ser mi palabra secreta
+		var palabra = "";
+		//Aqui voy metiendo las letras que le voy diciendo
+		var listaLetras = [];
+		var intentos = 0;
+		//Esta funcion se ejecuta nada mas abrir el archivo
+		function iniciar() {
+			document.getElementById("cuadrojugador2").style.display = "none";
+		}
+
+		function IntroducirPalabra() {
+			//Una vez que introduzco la palabra, la paso toda ella e mayusculas
+			//Y le cojo el value en lugar de textContent, ya que se trata de un input
+			palabra = document.getElementById("palabraorigen").value.toUpperCase();
+			//Cada letra la sustituyo por un guion y un espacio
+			document.getElementById("oculta").innerHTML = palabra.replace(/\w/g, "_ ");
+			//Cambio la visibilidad de los jugadores
+			document.getElementById("cuadrojugador1").style.display = "none";
+			document.getElementById("cuadrojugador2").style.display = "block";
+		}
+
+		function DecirLetra() {
+			//Esta es la letra que elijo en el select
+			var letra = document.getElementById("letra").value;
+			//compruebo que no la he dicho antes, comparandola con una lista que he ido formando
+			if (listaLetras.indexOf(letra) != -1) {
+				alert("Ya se dijo esa letra");
+			} else {
+				//meto la letra que he elegido el la lista de letras
+				listaLetras.push(letra);
+				intentos++;
+				//Cada vez que digo una letra, cambio los parrafos de las letras dichas y los numeros de intentos
+				//Va a sumar los intentos, siempre, ya haya acertado o no.
+				document.getElementById("intentos").innerHTML = intentos;
+				document.getElementById("letrasdichas").innerHTML = listaLetras;
+				//Imagino que este metodo comprueba las coincidencias entre listaletras y la palabra
+				FormarPalabra();
+
+				if (intentos >= 5) {
+					document.getElementById("letra").disabled = true;
+					document.getElementById("botondecirletra").disabled = true;
+				}
+			}
+		}
+
+		function FormarPalabra() {
+			//Esta es la nueva palabra que le voy a poner donde los guiones
+			var nueva = "";
+
+			for (i = 0; i < palabra.length; i++) {
+				//Si dentro de la lista de letras, que es la que he formado yo, no nos da -1
+				//con el indexOf, le añades la letra de esa posicion mas un espacio
+				if (listaLetras.indexOf(palabra[i]) != -1) {
+					nueva += palabra[i] + " ";
+					//Y si no, pues lo dejo como estaba
+				} else {
+					nueva += "_ ";
+				}
+			}
+			//Cada vez que le doy a poner letra, le pongo todo el valor de la nueva, no solo lo nuevo que he puesto
+			document.getElementById("oculta").innerHTML = nueva;
+		}
+
+		function Resolver() {
+			//Desabilito todo para no poder seguir jugando
+			document.getElementById("letra").disabled = true;
+			document.getElementById("botondecirletra").disabled = true;
+			document.getElementById("palabrasolucion").disabled = true;
+			document.getElementById("botonresolver").disabled = true;
+			//Esta variable es la que saco yo del input, es decir, que no hay que hacer 
+			//ninguna transformacion rara entre arrays a strings
+			var p2 = document.getElementById("palabrasolucion").value.toUpperCase();
+			if (palabra == p2) {
+				alert("Has ganado");
+			} else {
+				alert("Has perdido!! La palabra es: \n" + palabra);
+			}
+		}
+
+	</script>
+</body>
+
+</html>

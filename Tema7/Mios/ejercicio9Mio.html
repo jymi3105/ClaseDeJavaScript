@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Primer parrafo</p>
+    <p>Segundo parrafo</p>
+    <p>tercer parrafo</p>
+    <p>cuarto parrafo</p>
+    <p>quinto parrafo</p>
+
+<script>
+    var parrafos=document.getElementsByTagName('p');
+for (let i = 0; i < parrafos.length; i++) {
+    parrafos[i].addEventListener("click", function(e){
+        var primerParrafo=parrafos[0];
+        primerParrafo.parentElement.insertBefore(this, primerParrafo);
+    });
+    
+}
+
+
+</script>
+</body>
+</html>

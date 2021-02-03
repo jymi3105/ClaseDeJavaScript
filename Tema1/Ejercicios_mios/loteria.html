@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Loteria de 1000 jugadores</title>
+</head>
+
+<body>
+    <h1>LOTERIA</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+        var miArray = [2, 6, 45, 12, 35, 25];
+        var ceroAciertos = 0, ceroAciertos = 0, unAciertos = 0, dosAciertos = 0, tresAciertos = 0, cuatroAciertos = 0;
+        var cincoAciertos = 0, seisAciertos = 0;
+        var arrExtLot = Array(1000);
+
+        var tamArrInt = 0;
+        for (let j = 0; j < arrExtLot.length; j++) {
+            var arrIntLot = Array(6);
+            for (let i = 0; i < arrIntLot.length; i++) {
+                numAle = Math.floor((Math.random()) * 49) + 1;
+                if (arrIntLot.indexOf(numAle) == -1) {
+                    arrIntLot[i] = numAle;
+                } else {
+                    i--
+                }
+            }
+            arrExtLot[j] = (arrIntLot);
+        }
+        console.log(arrExtLot);
+        for (i = 0; i < arrExtLot.length; i++) {
+            aciertos = 0
+            for (j = 0; j < arrIntLot.length; j++) {
+
+                if (miArray.indexOf(arrExtLot[i][j]) != -1) {
+                    aciertos++;
+                };
+            }
+
+            switch (aciertos) {
+                case 0:
+                    ceroAciertos++;
+                    break;
+                case 1:
+                    unAciertos++;
+                    break;
+                case 2:
+                    dosAciertos++;
+                    break;
+                case 3:
+                    tresAciertos++;
+                    break;
+                case 4:
+                    cuatroAciertos++;
+                    break;
+                case 5:
+                    cincoAciertos++;
+                    break;
+                case 6:
+                    seisAciertos++;
+                    break;
+            };
+        }
+        console.log("Cero aciertos: " + ceroAciertos + "\nUn acierto: " + unAciertos + "\nDos aciertos: " + dosAciertos + "\nTres aciertos: "
+         + tresAciertos + "\nCuatro aciertos: " + cuatroAciertos + "\nCinco aciertos: " + cincoAciertos + "\nSeis aciertos: " + seisAciertos);
+
+    </script>
+</body>
+
+</html>

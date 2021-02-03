@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>lenguaje_31 - Arrays: Recorrer un array</title>
+</head>
+
+<body>
+    <h1>Mi ejercicio de FIND sacado de mozcilla developer</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+
+        const array1 = [5, 12, 8, 130, 44];
+
+        const found = array1.find(element => element > 10);
+
+        console.log(found);
+// expected output: 12
+
+//Ahora sacaremos un objeto por una de sus propiedades
+const inventario = [
+    {nombre: 'manzanas', cantidad: 2},
+    {nombre: 'bananas', cantidad: 0},
+    {nombre: 'cerezas', cantidad: 5}
+];
+
+function esCereza(fruta) { 
+    return fruta.nombre === 'cerezas';
+}
+
+console.log('veremos si tiene cerezas: ' + inventario.find(esCereza));
+// { nombre: 'cerezas', cantidad: 5 }
+
+const resultado = inventario.find( frut => frut.nombre === 'bananas' );
+
+console.log('El resultado de find: ' + resultado.nombre.toString());
+
+
+console.log("Usaremos el metodo find para encontrar los numermos primos en un array");
+function isPrime(element) {
+  let start = 2;
+  while (start <= Math.sqrt(element)) {
+    if (element % start++ < 1) {
+      return false;
+    }
+  }
+  return element > 1;
+}
+
+console.log([4, 6, 8, 12].find(isPrime)); // undefined, no encontrado
+console.log([4, 5, 8, 12].find(isPrime)); // 5
+
+
+    </script>
+</body>
+
+</html>

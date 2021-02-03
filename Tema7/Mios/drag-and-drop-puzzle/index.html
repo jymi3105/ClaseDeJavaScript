@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop (2)</title>
+    <style>
+        body {
+            font-family: Arial, Verdana, sans-serif;
+        }
+
+        #piezas {
+            display: flex;
+            flex-wrap: wrap;
+            width: 400px;
+            margin: auto;
+            justify-content: center;
+        }
+
+        #puzzle {
+            border: 1px solid black;
+            width: 318px;
+            height: 495px;
+            display: flex;
+            flex-wrap: wrap;
+            margin: auto;
+        }
+
+        .pieza {
+            width: 106px;
+            height: 165px;
+            background-size: cover;
+            margin: 10px;
+        }
+
+        .placeholder {
+            background-color: #F2F2F2;
+            outline: 1px solid rgb(150, 77, 77);
+            width: 106px;
+            height: 165px;
+            transition: 1s;
+        }
+
+        .placeholder.hover {
+            background-color: orange;
+        }
+
+        .placeholder .pieza {
+            margin: 0;
+        }
+
+        #mensaje {
+            color: black;
+            text-align: center;
+            display: none;
+        }
+
+        .ganaste {
+            background-color: #B3D67C;
+        }
+
+        .ganaste #mensaje {
+            display: block;
+        }
+
+        .ganaste .placeholder {
+            outline: none;
+        }
+
+        .ganaste #piezas {
+            display: none;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="puzzle"></div>
+        <div id="piezas"></div>
+    </div>
+    <h1 id="mensaje">¡Ganaste!</h1>
+   
+    
+    <script>
+        const imagenes = [
+            'imagen-0', 'imagen-1', 'imagen-2',
+            'imagen-3', 'imagen-4', 'imagen-5',
+            'imagen-6', 'imagen-7', 'imagen-8'
+        ];
+
+        const puzzle = document.getElementById('puzzle');
+        const piezas = document.getElementById('piezas');
+        const mensaje = document.getElementById('mensaje');
+        //Creo antes esta varible, porque luego empiezo a sacar imagenes de la coleccion, y pierdo su tamaño
+        let terminado = imagenes.length;
+        
+        //Esto que mientras no de 0, va a hacer lo que venga dentro del ciclo
+        while (imagenes.length) {
+            //El numero aleatoerio que crea es variable, por eso pongo imagenes.length, ya que 
+            //voy a ir sacando imagenes de esa coleccion
+            const index = Math.floor(Math.random() * imagenes.length);
+            //cada vuelta creo una clase div, y le doy el nombre de la clase
+            const div = document.createElement('div');
+            div.className = 'pieza';
+            //cada clase tendra el id con el nombre de la coleccion en el indice que haya sacado
+            div.id = imagenes[index];
+            //Le aplico ese atributo para despues poder arrastrarlo
+            div.draggable = true;
+            //La imagende fondo que le aplico es la direccion de la imagen de ese index
+            div.style.backgroundImage = `url("recursos/${imagenes[index]}.jpg")`;
+            //Y finalmente lo cuelgo de la clase piezas
+            piezas.appendChild(div);
+            //Esta es la instruccion que me elimina una imagen, en la posicion index
+            imagenes.splice(index, 1);
+        }
+
+        for (let i = 0; i < terminado; i++) {
+            //Aqui creo el div, donde mas adelante colocare las imagenes del puzzle
+            const div = document.createElement('div');
+            //le aplico ese estilo
+            div.className = 'placeholder';
+            div.dataset.id = i;
+            //se lo añado a la clase puzzle
+            
+            puzzle.appendChild(div);
+        }
+
+
+        piezas.addEventListener('dragstart', e => {
+            //El datatransfer es util para transferir informacion de cada imagen o pieza que yo mueva
+            //Cada pieza tiene un id, y eso es lo que transfiero para luego aplicar un if
+            e.dataTransfer.setData('id', e.target.id);
+        });
+
+        puzzle.addEventListener('dragover', e => {
+            //Le doy ese evento a todo el contenedor, y lo que hago es prevenir lo que el navegador 
+            //hace por defecto
+            e.preventDefault();
+            //Le añado el efecto hover cuando paso por encima, pero no se lo quito aqui,
+            //Y eso lo hare en el dragleave y en el drop, que es cuando el raton sale dea ahí
+            e.target.classList.add('hover');
+        });
+
+        puzzle.addEventListener('dragleave', e => {
+            e.target.classList.remove('hover');
+        });
+
+        puzzle.addEventListener('drop', e => {
+            e.target.classList.remove('hover');
+
+            //y aqui cojo el dato id que he conseguido mas arriba en el codigo
+            const id = e.dataTransfer.getData('id');
+            //divido el id en dos elementos que es lo que se para el - y los meto en un array
+            //Y me quedo con el segundo, que es el que voy a comparar luego con la i
+            const numero = id.split('-')[1];
+
+            if (e.target.dataset.id === numero) {
+                e.target.appendChild(document.getElementById(id));
+
+                terminado--;
+                //Una vez que ya da 0, le aplico la clase de terminado, como ganador
+                if (terminado === 0) {
+                    document.body.classList.add('ganaste');
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

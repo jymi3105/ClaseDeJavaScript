@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>lenguaje_31 - Arrays: Recorrer un array</title>
+</head>
+
+<body>
+    <h1>Mi ejercicio de FILTER sacado de mozcilla developer</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+        const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+
+        const result = words.filter(word => word.length > 6);
+
+        console.log(result);
+
+
+        var fruits = ['apple', 'banana', 'grapes', 'mango', 'orange'];
+
+        /**
+         * Filtra la matríz en función de un criterio de búsqueda (busqueda)
+         */
+        function filterItems(busqueda) {
+            return fruits.filter(function (el) {
+                return el.toLowerCase().indexOf(busqueda.toLowerCase()) > -1;
+            })
+        }
+
+        console.log(filterItems('ap')); // ['apple', 'grapes']
+        console.log(filterItems('an')); // ['banana', 'mango', 'orange']
+
+
+        /*
+        El siguiente ejemplo emplea filter() para crear
+         un json filtrado con todos lo elementos que tengan id numérico distinto de cero.
+        */
+
+        var arr = [
+            { id: 15 },
+            { id: -1 },
+            { id: 0 },
+            { id: 3 },
+            { id: 12.2 },
+            {},
+            { id: null },
+            { id: NaN },
+            { id: 'undefined' }
+        ];
+
+        var entradasInvalidas = 0;
+        // Si el elemento tiene un atributo id, y su valor correspondiente es un numero
+        // Y no es el valor NaN, entonces es una entrada válida
+        function filtrarPorID(obj) {
+            if ('id' in obj && typeof (obj.id) === 'number' && !isNaN(obj.id)) {
+                return true;
+            } else {
+                entradasInvalidas++;
+                return false;
+            }
+        }
+
+        var arrPorID = arr.filter(filtrarPorID);
+
+        console.log('Array Filtrado\n', arrPorID);
+        // [{ id: 15 }, { id: -1 }, { id: 0 }, { id: 3 }, { id: 12.2 }]
+
+        console.log('Número de Entradas Invalidas = ', entradasInvalidas);
+// 4
+
+
+    </script>
+</body>
+
+</html>

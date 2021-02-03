@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>bom_15 - Abrir los enlaces con un intervalo de tiempo</title>
+</head>
+
+<script type="text/javascript">
+    var x = 0;
+
+    var webs = ["http://www.iesribera.es", "http://www.educa.jcyl.es", "http://moodle.aularibera.es", "http://www.nortecastilla.es"];
+
+    var web;
+    intervalo = setInterval(function () {
+        if (x == 3) {
+            x = 0;
+        } else {
+            x++;
+        }
+        laweb = webs[x];
+        window.open(laweb, "myWindow", "toolbar=yes,scrollbars=yes,resizable=yes,width=900,height=600");
+    }, 3000);
+
+    function open_window() {
+        intervalo;
+    };
+
+    setTimeout(function(){
+        clearInterval(intervalo);
+        alert("Adios");
+    },19000);
+
+</script>
+
+<body>
+
+    <body onload="open_window();">
+        <h1>bom_15 - Abrir los enlaces con un intervalo de tiempo</h1>
+        <hr />
+        <h3>Abrir ventanas</h3>
+
+    </body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio de arrays en clase</title>
+</head>
+
+<body>
+    <h1>Que coincide en mis dos arrays?</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+        var array1 = [2, 65, 45, 8, 9, 3, 7, 7, 5];
+        var array2 = [2, 6, 5, 8, 9, 31, 74, 72, 5];
+        var coincidentes = 0;
+
+        for (i = 0; i < array1.length; i++) {
+            if (array1[i] === array2[i]) {
+                coincidentes++;
+            }
+
+        }
+        console.log("Coinciden un total de: " + coincidentes + " valores. y es de tipo: " + typeof (array2[2]));
+
+        var tablaA = new Array(5);
+        tablaA.fill(['a', 'b', 'c']);
+        console.log(tablaA);
+
+        var tablaC = Array.of([1, 2, 3], [3, 4, 5]);
+        console.log(tablaC);
+
+        console.log("AHORA RECORREREMOS UNA TABLA CON EL BUCLE FOR EACH");
+        var array3 = [[2, 6, 5], [8, 9, 31], [74, 72, 5]];
+        array3.forEach(function (elementoInt, indiceInt) {
+            array3[elementoInt].forEach(function (elementoExt, indiceExt) {
+                console.log(array3[indiceExt][indiceInt])
+            })//Esta mal, da error
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio de arrays en clase</title>
+</head>
+
+<body>
+    <h1>parametro rest</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+        var resultado;
+        var operacion='-';
+
+        switch (operacion) {
+            case '+':
+                resultado = function (a, b) {
+                    return a + b;
+                }
+                break;
+
+            case '-':
+                resultado = function (a, b) {
+                    return a - b;
+                }
+                break;
+            case '*':
+                resultado = function (a, b) {
+                    return a * b;
+                }
+                break;
+            case '/':
+                resultado = function (a, b) {
+                    return a / b;
+                }
+                break;
+        }
+
+        var calcular=resultado(1,5);
+        console.log(calcular);
+       
+
+
+    </script>
+</body>
+
+</html>

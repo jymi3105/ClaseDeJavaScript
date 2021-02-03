@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>bom_15 - Abrir los enlaces con un intervalo de tiempo</title>
+</head>
+
+<script type="text/javascript">
+
+//meto la funcion en una variable para luego poder limpiar el setInterval
+    intervalo = setInterval(function () {
+
+        window.open("http://www.iesribera.es", "_blank");
+    }, 10000);
+
+    function open_window() {
+        intervalo;
+    };
+
+    function noAbrir() {
+        clearInterval(intervalo);
+        alert("Adios");
+    }
+
+</script>
+
+<body>
+
+    <body">
+        <h1>Evitar que se abra antes de un tiempo x</h1>
+        <hr />
+        <h3>Abrir ventanas</h3>
+
+        <button onclick="open_window();">Abrir</button><br>
+        <button onclick="noAbrir()">Ya no quiero abrir</button>
+
+    </body>
+
+</html>

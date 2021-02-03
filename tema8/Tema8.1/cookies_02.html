@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>cookies_02 - Lectura de cookies</title>
+</head>
+
+<body>
+	<h1>cookies_02 - Lectura de cookies</h1>
+	<hr />
+	<button onclick="leerTodasCookies();">Leer todas las cookies</button>
+	<br /><br />
+	<input type="text" id="idnombre" />
+	<button onclick="valorCoo();">Leer la cookies</button>
+
+	<script type="text/javascript">
+
+		function leerTodasCookies() {
+			alert(document.cookie);
+		}
+
+		function valorCoo() {
+			var nombre = document.getElementById('idnombre').value;
+			var valor = leerCookie(nombre);
+			alert(valor);
+		}
+
+
+		function leerCookie(clave) {
+			var resultado = "";
+			//Como el formato siempre tiene que llevar entre la clave y el valor, un =, pues ta se lo añadimos aqui
+			var busqueda = clave + "=";
+			//Leyendo todas las coockies, nos va a dar una cadena separando las diferentes cookies con ;
+			//Asi que lo transfor a un array
+			var listCookies = document.cookie.split(';');
+			var par = "";
+
+			for (var i = 0; i < listCookies.length; i++) {
+				par = listCookies[i]; //Cada elemento del array de cookies: nombre de la cookie y carácter =
+
+				//Se quitan los espacios en blanco del principio
+				while (par.charAt(0) == ' ') {
+					//Y en ese caso me quedo con la parte de la cadena desde la posicion 0
+					par = par.substring(1);
+				}
+
+				//Se compara los que buscamos con el elemento del array. Si devuelve como índice 0 se ha encontrado
+				if (par.indexOf(busqueda) == 0) {
+					//Me quedo con la parte de la cadena desde la posicion tamaño de la cookie buscadas
+					//hasta el final de la cadena, ya que el metodo substring acepta dos parametros
+					resultado = par.substring(busqueda.length, par.length);
+				}
+			}
+			return resultado;
+		}
+
+	</script>
+</body>
+
+</html>

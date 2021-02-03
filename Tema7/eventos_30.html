@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>eventos_30 - Ejercicio: No coincidan dos elecciones de un campo select y borrar las opciones no disponibles</title>
+	</head>
+	<body onload="init()">
+		<h1>eventos_30 - Ejercicio: No coincidan dos elecciones de un campo select y borrar las opciones no disponibles</h1>
+		<hr />
+
+		<h2>Selecciona por orden de preferencia tus ciudades favoritas</h2>
+		<form>
+
+			<select name="paris" id="paris" onchange="check(event);">
+			</select>París
+
+			<br /><br />
+
+			<select name="londres" id="londres" onchange="check(event);">
+			</select>Londres
+
+			<br /><br />
+			
+			<select name="roma" id="roma" onchange="check(event);">
+			</select>Roma
+
+			<br /><br />
+			
+			<select name="madrid" id="madrid" onchange="check(event);">
+			</select>Madrid
+			
+			<br /><br />
+
+			<select name="berlin" id="berlin" onchange="check(event);">
+			</select>Berlín
+
+		</form>
+
+		<script type="text/javascript">
+			
+			function init() {
+				var nodos = [];
+		
+				for(i=1;i<=5;i++) {
+					//Defino el nodo que voy a insertar en todas las ciudades
+					nodos[i] = document.createElement("option");
+					//Le defino un atributo
+					nodos[i].setAttribute("value",i);
+					//Y le pongo el interior del option, que no deja de ser un html
+					nodos[i].innerHTML = i;
+
+					//Lo clono para que no me lo quite de ningun lado, y lo inserto
+					document.getElementById('paris').appendChild(nodos[i].cloneNode(true));
+					document.getElementById('londres').appendChild(nodos[i].cloneNode(true));
+					document.getElementById('roma').appendChild(nodos[i].cloneNode(true));
+					document.getElementById('madrid').appendChild(nodos[i].cloneNode(true));
+					document.getElementById('berlin').appendChild(nodos[i].cloneNode(true));
+				}
+			}	
+
+
+			function searchNode(parent,v) {
+				for(i=0;i<parent.children.length;i++) {
+					if(parent[i].value == v){
+						//console.log(parent[i]);
+					}
+					if(parent[i].value == v)
+						return parent[i];
+				}
+			}
+
+			function check(event) {
+				//el event.target.id lo que nos da es la ciudad donde se hace el evento, y el valor de ese objeto 
+				//es lo que hayas seleccionado, y ese valor hay que capturarlo
+				var n = document.getElementById(event.target.id).value;
+				console.log("Estas actuando sobre: " + event.target.id + " y le has dado un valor de: " + document.getElementById(event.target.id).value);
+				if(n != "") { //QUITAR ELEMENTOS
+					if(event.target.id != 'paris')
+						document.getElementById('paris').removeChild(searchNode(document.getElementById('paris'),n));
+				
+					if(event.target.id != 'londres')
+						document.getElementById('londres').removeChild(searchNode(document.getElementById('londres'),n));
+				
+					if(event.target.id != 'roma')
+						document.getElementById('roma').removeChild(searchNode(document.getElementById('roma'),n));
+				
+					if(event.target.id != 'madrid')
+						document.getElementById('madrid').removeChild(searchNode(document.getElementById('madrid'),n));
+				
+					if(event.target.id != 'berlin')
+						document.getElementById('berlin').removeChild(searchNode(document.getElementById('berlin'),n));
+				}
+				event.target.disabled = true;					
+			}
+			
+		</script>
+	</body>
+</html>

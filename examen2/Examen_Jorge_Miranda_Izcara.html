@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen JS Jorge Miranda Izcara</title>
+    <style>
+        .no {
+            border: 2px solid black;
+        }
+
+        .si {
+            border: 2px dotted red;
+        }
+
+        div {
+            padding: 1cm;
+            margin: 0.5cm;
+            width: 25%;
+        }
+
+        #obligatorio {
+            font-size: 20px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Examen 2</h1>
+    <hr />
+    <span id="obligatorio">Obligatorio</span>
+    <div id="cuadrodni">
+        DNI <br>
+        <input type="text" id="dni">
+    </div>
+
+    <div id="cuadronombre">
+        NOMBRE <br>
+        <input type="text" id="nombre">
+    </div>
+
+    <div id="cuadrotelefono">
+        TELEFONO <br>
+        <input type="text" id="telefono">
+    </div>
+
+    <button onclick="enviar()">Almacenar</button>
+
+    <br><br>
+    <table>
+        <tbody id="tabla">
+
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+    var repetido;
+        var obligatorio = document.getElementById("obligatorio");
+        obligatorio.setAttribute("draggable", true);
+        //fase1
+        obligatorio.addEventListener("dragstart", function (event) {
+            event.dataTransfer.setData("", event.target.id);
+        });
+
+
+        //Le pongo el borde a los divs
+        var divs = document.getElementsByTagName("div");
+        for (let i = 0; i < divs.length; i++) {
+            divs[i].style.border = "1px solid black";
+            //fase1
+            divs[i].addEventListener("dragstart", function (event) {
+                event.dataTransfer.setData("", event.target.id);
+                divs[i].setAttribute("class", "no");
+                divs[i].getElementsByTagName("input")[0].removeAttribute("required");
+            });
+
+            //fase2
+            divs[i].addEventListener("dragover", function (event) {
+                event.preventDefault();
+            });
+            //fase3
+            divs[i].addEventListener("drop", function (event) {
+                var idobligatorio = event.dataTransfer.getData("", event.target.id);
+                divs[i].style.border = "";
+                divs[i].setAttribute("class", "si");
+                divs[i].setAttribute("draggable", true);
+                divs[i].getElementsByTagName("input")[0].setAttribute("required", "required");
+                console.log(idobligatorio);
+            });
+
+        }
+        //Creacion de la cabecera de la tabla
+        var tabla = document.getElementById("tabla");
+        tabla.style.border = "2px solid black";
+        var fila = document.createElement("tr");
+
+        var filaclonada, celdaclonada;
+        filaclonada = fila.cloneNode(true);
+        var celda = document.createElement("td");
+        celda.style.border = "1px solid black";
+
+        texto = document.createTextNode("DNI");
+        celda.appendChild(texto);
+        filaclonada.appendChild(celda);
+        celdaclonada = celda.cloneNode();
+        texto = document.createTextNode("NOMBRE");
+        celdaclonada.appendChild(texto);
+        filaclonada.appendChild(celdaclonada);
+        celdaclonada = celda.cloneNode();
+        texto = document.createTextNode("TELEFONO");
+        celdaclonada.appendChild(texto);
+        filaclonada.appendChild(celdaclonada);
+        tabla.appendChild(filaclonada);
+        tabla.style.display = "none";
+
+
+        function enviar() {
+            tabla.style.display = "block";
+            var dni, nombre, telefono;
+            var cumpleRequerido = true;
+            repetido = false;
+
+            dni = document.getElementById("dni").value;
+            nombre = document.getElementById("nombre").value;
+            telefono = document.getElementById("telefono").value;
+
+            if ((document.getElementById("dni").hasAttribute("required") && dni == "") || (document.getElementById("nombre").hasAttribute("required") && nombre == "") || (document.getElementById("telefono").hasAttribute("required") && telefono == "")) {
+                cumpleRequerido = false;
+                if (document.getElementById("dni").hasAttribute("required") && dni == "") {
+                    document.getElementById("dni").focus();
+                }else if (document.getElementById("nombre").hasAttribute("required") && nombre == "") {
+                    document.getElementById("nombre").focus();
+                }else if (document.getElementById("telefono").hasAttribute("required") && telefono == "") {
+                    document.getElementById("telefono").focus();
+                }
+            }
+
+
+
+            if (cumpleRequerido) {
+                comprobar(dni, nombre, telefono, repetido);
+
+                //Si el dni no esta repetido, meto otra fila
+                if (!repetido) {
+                    filaclonada = fila.cloneNode();
+                    filaclonada.setAttribute("ondblclick", "quitar(this)");
+                    celdaclonada = celda.cloneNode();
+                    texto = document.createTextNode(dni);
+                    celdaclonada.appendChild(texto);
+                    filaclonada.appendChild(celdaclonada);
+                    celdaclonada = celda.cloneNode();
+                    texto = document.createTextNode(nombre);
+                    celdaclonada.appendChild(texto);
+                    filaclonada.appendChild(celdaclonada);
+                    celdaclonada = celda.cloneNode();
+                    texto = document.createTextNode(telefono);
+                    celdaclonada.appendChild(texto);
+                    filaclonada.appendChild(celdaclonada);
+                    tabla.appendChild(filaclonada);
+                    console.log(dni + "  " + nombre + "  " + telefono);
+                }
+                //vacio los campos
+                document.getElementById("dni").value = "";
+                document.getElementById("nombre").value = "";
+                document.getElementById("telefono").value = "";
+
+            } else {
+                alert("Hay campos requeridos sin completar.");
+            }
+        }
+
+        function quitar(fila) {
+            fila.remove();
+        }
+        function comprobar(dni, nombre, telefono) {
+            var celdas = document.getElementsByTagName("td");
+            //Compruebo que el dni no se rapita
+            for (let i = 3; i < celdas.length; i++) {
+                if (i % 3 == 0) {
+                    if (dni == celdas[i].innerText) {
+                        texto = document.createTextNode(dni);
+                        celdas[i].innerText = dni;
+                        celdas[i + 1].innerText = nombre;
+                        celdas[i + 2].innerText = telefono;
+                        repetido = true;
+                    }
+                }
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

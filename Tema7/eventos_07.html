@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>eventos_07 - Ejercicio: Hacer click sobre una celda y que te devuelva las coordenadas</title>
+		<style>
+			td {
+				width: 40px;
+				height: 40px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>eventos_07 - Ejercicio: Hacer click sobre una celda y que te devuelva las coordenadas</h1>
+		<hr />
+		<table border="3">
+			<tbody>
+				<tr><td>A</td><td>B</td><td>C</td></tr>
+				<tr><td>D</td><td>E</td><td>F</td></tr>
+				<tr><td>G</td><td>H</td><td>I</td></tr>
+				<tr><td>J</td><td>K</td><td>L</td></tr>
+				<tr><td>M</td><td>N</td><td>O</td></tr>
+				<tr><td>P</td><td>Q</td><td>R</td></tr>
+			</tbody>
+		</table>
+
+		<script type="text/javascript">
+
+			//Se ponen los eventos
+			var celdas = document.getElementsByTagName("td");
+
+			for(i=0;i<celdas.length;i++) {
+				//En cuanto se inicia la pagina, se añaden todos esos eventos
+				celdas[i].addEventListener("click",function (e) {
+					
+					var columna = 0,fila = 0;
+
+					//COLUMNA
+					/*for(col=0;col<this.parentNode.children.length;col++) {
+						if(this == this.parentNode.children[col]) {
+							columna = col + 1;
+						}
+					}*/
+
+					//FILA
+					//Si solo tuviera un parentNode, se referiria a las filas,
+					//Y para referise a lo que lo contiene, tiene que subir otro nivel
+					var nodoTbody = this.parentNode.parentNode;
+					//Esto solo es para comprobar a que se refiere con el this
+					console.log(this);
+					//Con lo cual el hijo directo del nodoTbody es el tr, que son las filas
+					//Y con el fil, se refiere al elemento, dentro de un grupo de elementos
+					for(fil=0;fil<nodoTbody.children.length;fil++) {
+						//Celda dentro de cada fila. el children[fil].children.length se refiere
+						// al numero de celdas que hay en cada fila
+						for(col=0;col<nodoTbody.children[fil].children.length;col++) {
+							//Esto sole es para comprobar lo que sale de cada recorrido
+							//console.log(nodoTbody.children[fil].children[col]);
+							if(this == nodoTbody.children[fil].children[col]) {
+								//El +1 es porque los index comienzan por 0.
+								fila = fil + 1;
+								columna = col + 1;
+								//console.log("fila: " + fila + " columna: " + columna)
+							}
+						}
+					}
+
+					alert("FILA: " + fila + " <---> COLUMNA:" + columna);
+				});
+			}
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>seleccion prohibida</title>
+</head>
+
+<body>
+
+    <h1>La selecccion prohibida</h1>
+
+    <div id="ciudades">
+        <select onclick="seleccion(this);" name="Madrid" id="Madrid">
+            <option value="0"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        MADRID
+        <br>
+        <select onclick="seleccion(this);" name="BARCELONA" id="BARCELONA">
+            <option value="0"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        BARCELONA
+        <br>
+        <select onclick="seleccion(this);" name="LONDRES" id="LONDRES">
+            <option value="0"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        LONDRES
+        <br>
+        <select onclick="seleccion(this);" name="PARIS" id="PARIS">
+            <option value="0"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        PARIS
+        <br>
+        <select onclick="seleccion(this);" name="BURGOS" id="BURGOS">
+            <option value="0"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        BURGOS
+        <br>
+    </div>
+
+    <script>
+
+        function seleccion(params) {
+            var hijos = params.children;
+        
+            console.log(hijos[0].getAttribute('value'));
+        }
+    </script>
+</body>
+
+</html>

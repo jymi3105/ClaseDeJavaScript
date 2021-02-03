@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="cargar()">
+    <h1 id="accesoN"></h1>
+
+    <script>
+        function cargar() {
+            if (leerCookie("nAcceso") == "") {
+                ponerUnaCookie('nAcceso', '1', 365);
+                document.getElementById("accesoN").innerHTML = leerCookie("nAcceso");
+            } else {
+                modificarCookie();
+            }
+        }
+        function modificarCookie() {
+            document.getElementById("accesoN").innerHTML = leerCookie("nAcceso");
+            document.cookie = "nAcceso=" + (parseInt(document.getElementById("accesoN").innerHTML) + 1);
+            document.getElementById("accesoN").innerHTML = (leerCookie("nAcceso"));
+        }
+
+        function ponerUnaCookie(clave, valor, dias = 0) {
+            var miCookie = "";
+            if (dias > 0) {
+                var fecha = new Date();
+                fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
+                var expires = "expires=" + fecha.toUTCString();
+                miCookie = clave + "=" + valor + ";" + expires; //PERMANENTE
+            } else {
+                miCookie = clave + "=" + valor; //SESIÓN
+            }
+            document.cookie = miCookie;
+        }
+
+        function leerCookie(clave) {
+            var resultado = "";
+            var busqueda = clave + "=";
+
+            var listCookies = document.cookie.split(';');
+            var par = "";
+
+            for (var i = 0; i < listCookies.length; i++) {
+                par = listCookies[i]; //Cada elemento del array de cookies: nombre de la cookie y carácter =
+
+                //Se quitan los espacios en blanco 
+                while (par.charAt(0) == ' ') {
+                    par = par.substring(1);
+                }
+
+                //Se compara los que buscamos con el elemento del array. Si devuelve como índice 0 se ha encontrado
+                if (par.indexOf(busqueda) == 0) {
+                    resultado = par.substring(busqueda.length, par.length);
+                }
+            }
+            return resultado;
+        }
+
+    </script>
+
+</body>
+
+</html>

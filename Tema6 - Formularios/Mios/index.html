@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>formularios_18 - Ejercicio: Juego del ahorcado</title>
+    <style>
+        div {
+            border: 2px solid black;
+            padding: 1cm;
+        }
+
+        #cuadropalabra {
+            font-size: 1cm;
+        }
+
+        #letrasdichas {
+            color: red;
+        }
+
+        #intentos {
+            color: green;
+        }
+
+        #cuadrojugador2 {
+            float: left;
+        }
+
+        #colgado {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>El maravilloso juego del ahorcado</h1>
+
+    <div id="cuadrojugador1">
+
+        <button onclick="IntroducirPalabra();">COMENZAR EL JUEGO</button>
+    </div>
+
+    <hr />
+
+    <div id="cuadropalabra">
+        <p id="intentos"></p>
+        <hr />
+        <p id="letrasdichas"></p>
+        <hr />
+        <p id="oculta"></p>
+    </div>
+
+    <hr />
+
+    <div id="cuadrojugador2">
+        <h1>JUGADOR 2</h1>
+        Selecciona una letra<br />
+        <select id="letra">
+            <option id="A">A</option>
+            <option id="B">B</option>
+            <option id="C">C</option>
+            <option id="D">D</option>
+            <option id="E">E</option>
+            <option id="F">F</option>
+            <option id="G">G</option>
+            <option id="H">H</option>
+            <option id="I">I</option>
+            <option id="J">J</option>
+            <option id="K">K</option>
+            <option id="l">L</option>
+            <option id="M">M</option>
+            <option id="N">N</option>
+            <option id="Ñ">Ñ</option>
+            <option id="O">O</option>
+            <option id="P">P</option>
+            <option id="Q">Q</option>
+            <option id="R">R</option>
+            <option id="S">S</option>
+            <option id="T">T</option>
+            <option id="U">U</option>
+            <option id="V">V</option>
+            <option id="W">W</option>
+            <option id="X">X</option>
+            <option id="Y">Y</option>
+            <option id="Z">Z</option>
+            <option id=" " value=" ">ESPACIO</option>
+        </select><br />
+        <button id="botondecirletra" onclick="DecirLetra();">Decir letra</button>
+
+        <br /><br />
+
+        Introduce tu solución
+        <input type="text" id="palabrasolucion" /><br />
+        <button id="botonresolver" onclick="Resolver();">Resolver</button><br />
+        <button id="volverJugar" onclick="volverJugar()">Volver a jugar</button>
+    </div>
+    <script type="text/javascript">
+        var palabra = "CABALLITO DE MADERA";
+        var nueva = "";
+        var listaLetras = [];
+        var intentos = 0, fallos = 0;
+
+
+        function IntroducirPalabra() {
+            //  palabra = document.getElementById("palabraorigen").value.toUpperCase();
+            if (palabra != "") {
+                document.getElementById("cuadrojugador1").style.display = "none";
+                document.getElementById("cuadrojugador2").style.display = "block";
+                document.getElementById("cuadropalabra").style.display = "block";
+                document.getElementById("oculta").innerHTML =
+                    nueva = palabra.replace(/(\w|\s)/g, '* ');
+                document.getElementById("intentos").innerHTML = "Intento: " + intentos;
+                document.getElementById("volverJugar").disabled = true;
+            }
+        }
+
+        function DecirLetra() {
+
+            letra = document.getElementById("letra").value;
+            if (listaLetras.indexOf(letra) == -1) {
+                listaLetras.push(letra);
+                document.getElementById("letrasdichas").innerHTML = listaLetras;
+                intentos++;
+                document.getElementById("intentos").innerHTML = "Intento: " + intentos;
+            } else {
+                alert("La letra '" + letra + "' ya '' esta dicha.")
+            }
+            var posicion = 0;
+            var posicionStart = posicion;
+            if (palabra.indexOf(letra) == -1) {
+                fallos++;
+            }
+            while (posicion != -1) {
+                posicion = palabra.indexOf(letra, posicionStart);
+                if (posicion != -1) {
+                    //console.log("En la posicion: " + posicion);
+                    posicionStart = posicion + 1;
+                }
+            }
+            nueva = "";
+            for (let i = 0; i < palabra.length; i++) {
+                if (listaLetras.indexOf(palabra[i]) != -1) {
+                    nueva += palabra[i] + "      ";
+                    if (palabra[i] == " ") {
+                        //console.log("espacio");
+                        nueva += "__";
+                    }
+                } else {
+                    nueva += "* ";
+                }
+            }
+
+            document.getElementById("oculta").innerHTML = nueva;
+
+            if (fallos > 4) {
+                document.getElementById("letra").disabled = true;
+                document.getElementById("botondecirletra").disabled = true;
+                document.getElementById("palabrasolucion").disabled = true;
+                document.getElementById("botonresolver").disabled = true;
+                document.getElementById("volverJugar").disabled = false;
+                document.getElementById("palabrasolucion").value = palabra;
+                alert("Has perdido y te vamos a colgar.\nLa palabra era: " + palabra);
+            }
+        }
+
+        function Resolver() {
+            if (document.getElementById("palabrasolucion").value == "") {
+                alert("Tendras que meter algun valor!! Digo yo, no?? ;-(")
+            } else {
+                if (document.getElementById("palabrasolucion").value.toUpperCase() == palabra) {
+                    alert("Has ganado!!");
+                    document.getElementById("letra").disabled = true;
+                    document.getElementById("botondecirletra").disabled = true;
+                    document.getElementById("palabrasolucion").disabled = true;
+                    document.getElementById("botonresolver").disabled = true;
+                    document.getElementById("volverJugar").disabled = false;
+                } else {
+                    alert("Has perdido!! Has metido\n" + document.getElementById("palabrasolucion").value.toUpperCase() + "\ny era: " + palabra);
+                    document.getElementById("letra").disabled = true;
+                    document.getElementById("botondecirletra").disabled = true;
+                    document.getElementById("palabrasolucion").disabled = true;
+                    document.getElementById("botonresolver").disabled = true;
+                    document.getElementById("volverJugar").disabled = false;
+                }
+            }
+        }
+
+        function volverJugar() {
+            document.getElementById("letra").disabled = false;
+            document.getElementById("botondecirletra").disabled = false;
+            document.getElementById("palabrasolucion").disabled = false;
+            document.getElementById("botonresolver").disabled = false;
+            document.getElementById("cuadrojugador1").style.display = "block";
+            document.getElementById("cuadrojugador2").style.display = "none";
+            document.getElementById("cuadropalabra").style.display = "none";
+            document.getElementById("palabrasolucion").value = "";
+            document.getElementById("palabraorigen").value = "";
+            intentos = 0;
+        }
+
+    </script>
+
+</body>
+
+</html>

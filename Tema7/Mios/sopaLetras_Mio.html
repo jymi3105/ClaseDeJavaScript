@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>eventos_33 - Ejercicio: Sopa de letras (hacer y resolver)</title>
+    <style>
+        #tablero td {
+            height: 100px;
+            width: 100px;
+            border: 2px solid black;
+            text-align: center;
+            font-size: 80px
+        }
+
+        span {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>eventos_33 - Ejercicio: Sopa de letras (hacer y resolver)</h1>
+    <hr />
+    <div id="c1">
+        Número de filas y columnas
+        <input type="number" min="5" max="15" step="1" id="filascolumnas" value="8" />
+        <br /><br />
+        <button onclick="iniciarJuego();" id="botonIniciar">Iniciar juego</button>
+    </div>
+
+    <br /><br />
+
+    <div id="c2" style="display:none">
+        Introducir palabra<br />
+        <input type="text" id="buscada" />
+        <button onclick="comprobarPalabra();">Probar palabra</button>
+        &nbsp;&nbsp;&nbsp;<span id="parrafo">0 veces</span>
+    </div>
+
+    <hr />
+    <table>
+        <tbody id="tablero">
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        var numFilaColumnas;
+        var numCeldas;
+        function iniciarJuego() {
+            numFilaColumnas = document.getElementById("filascolumnas").value;
+            numCeldas = Math.pow(numFilaColumnas, 2);
+            document.getElementById("c2").style.display = "block";
+            document.getElementById("c1").style.display = "none";
+            var tablero = document.getElementById("tablero");
+            var letras = "AABCDEEEFGHIJKLMNÑOOPQRSTUVWXTZ";
+            var fila, celda, texto;
+            var letra;
+
+            for (let i = 0; i < numCeldas; i++) {
+                if (i % numFilaColumnas == 0) {
+                    fila = document.createElement("tr");
+                    tablero.appendChild(fila);
+                }
+
+                letra = letras[Math.floor(Math.random() * letras.length)];
+                celda = document.createElement("td");
+                celda.setAttribute("draggable", true);
+                celda.id = i + 1;
+                texto = document.createTextNode(letra);
+                celda.appendChild(texto);
+                fila.appendChild(celda);
+
+                var celda1, celda2, filaCambio1, filaCambio2, columnaCambio1, columnaCambio2;
+
+                //FASE1
+                celda.addEventListener("dragstart", function (evento) {
+                    evento.dataTransfer.setData("", evento.target.id);
+                    celda1 = evento.target.id;
+                    filaCambio1 = Math.ceil(celda1 / numFilaColumnas);
+                    columnaCambio1 = celda1 % numFilaColumnas;
+                    if (columnaCambio1 == 0) {
+                        columnaCambio1 = numFilaColumnas;
+                    }
+
+                    colorea(celda1, "red", 2000);
+                });
+
+                //FASE2
+                celda.addEventListener("dragover", function (evento) {
+                    evento.preventDefault();
+                });
+
+                //FASE3
+                celda.addEventListener("drop", function (evento) {
+                    celda2 = evento.target.id;
+                    filaCambio2 = Math.ceil(celda2 / numFilaColumnas);
+                    columnaCambio2 = celda2 % numFilaColumnas;
+                    if (columnaCambio2 == 0) {
+                        columnaCambio2 = numFilaColumnas;
+                    }
+                    colorea(celda1, "red", 1000);
+                    colorea(celda2, "yellow", 1000);
+                    if (!evento.altKey && !evento.ctrlKey) {
+                        intercambiaCeldas(celda1, celda2);
+                    }
+                    if (evento.altKey) {
+                        if (filaCambio1 != filaCambio2) {
+                            intercambiaFilas(filaCambio1, filaCambio2);
+                        }
+                    }
+                    if (evento.ctrlKey) {
+                        if (columnaCambio1 != columnaCambio2) {
+                            intercambiaColumnas(columnaCambio1, columnaCambio2);
+                        }
+                    }
+
+                });
+            }
+        }
+        function intercambiaCeldas(c1, c2) {
+            var temporal;
+            temporal = document.getElementById(c2).innerHTML;
+            document.getElementById(c2).innerHTML = document.getElementById(c1).innerHTML;
+            document.getElementById(c1).innerHTML = temporal;
+        }
+
+        function intercambiaFilas(f1, f2) {
+            var tr = document.getElementsByTagName("tr");
+
+            for (let i = 0; i < tr.length; i++) {
+                celda2 = tr[f2 - 1].children[i].id;
+                colorea(celda2, "pink", 1000);
+                celda1 = tr[f1 - 1].children[i].id;
+                colorea(celda1, "green", 1000);
+                intercambiaCeldas(celda1, celda2);
+            }
+        }
+
+        function intercambiaColumnas(col1, col2) {
+            var tr = document.getElementsByTagName("tr");
+            console.log(col1 + ", " + col2);
+            for (let i = 0; i < tr.length; i++) {
+                celda2 = tr[i].children[col2 - 1].id;
+                colorea(celda2, "pink", 1000);
+                celda1 = tr[i].children[col1 - 1].id;
+                colorea(celda1, "green", 1000);
+                intercambiaCeldas(celda1, celda2);
+            }
+        }
+
+        function colorea(id, color, tiempo) {
+            document.getElementById(id).style.backgroundColor = color;
+            setTimeout(function () {
+                document.getElementById(id).style.backgroundColor = "white";
+            }, tiempo);
+        }
+
+        function comprobarPalabra() {
+            var coincidencias = 0;
+            var cadena, indice;
+            var buscada = document.getElementById("buscada").value.toUpperCase();
+            var t = document.getElementById("tablero");
+            //filas
+            for (let i = 0; i < numFilaColumnas; i++) {
+                cadena = "";
+                for (let j = 0; j < numFilaColumnas; j++) {
+                    cadena += t.children[i].children[j].innerHTML;
+                }
+                if (cadena.indexOf(buscada) != -1) {
+                    indice = cadena.indexOf(buscada);
+                    coincidencias++;
+                    for (let j = indice + 1 + (i * numFilaColumnas); j < indice + 1 + buscada.length + (i * numFilaColumnas); j++) {
+                        colorea(j, "blue", 3000);
+                    }
+                }
+            }
+            //COLUMNAS
+            for (let i = 0; i < numFilaColumnas; i++) {
+                cadena = "";
+                for (let j = 0; j < numFilaColumnas; j++) {
+                    cadena += t.children[j].children[i].innerHTML;
+                }
+                
+                if (cadena.indexOf(buscada) != -1) {
+                    indice = cadena.indexOf(buscada);
+                    coincidencias++;
+                    for (let j = indice*numFilaColumnas + (i + 1); j < indice*numFilaColumnas + (i + 1) + buscada.length*numFilaColumnas ; j+=cadena.length) {
+                        colorea(j, "blue", 3000);
+                    }
+                }
+
+            }
+           // console.log(indice);
+        }
+
+    </script>
+</body>
+
+</html>

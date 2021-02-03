@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>eventos_30 - Ejercicio: No coincidan dos elecciones de un campo select y borrar las opciones no disponibles
+	</title>
+</head>
+
+<body onload="init()">
+	<h1>eventos_30 - Ejercicio: No coincidan dos elecciones de un campo select y borrar las opciones no disponibles</h1>
+	<hr />
+
+	<h2>Selecciona por orden de preferencia tus ciudades favoritas</h2>
+	<form>
+
+		<select name="paris" id="paris">
+		</select>París
+
+		<br /><br />
+
+		<select name="londres" id="londres">
+		</select>Londres
+
+		<br /><br />
+
+		<select name="roma" id="roma">
+		</select>Roma
+
+		<br /><br />
+
+		<select name="madrid" id="madrid">
+		</select>Madrid
+
+		<br /><br />
+
+		<select name="berlin" id="berlin">
+		</select>Berlín
+
+	</form>
+
+	<script type="text/javascript">
+
+		function init() {
+			var nodos = [];
+			for (let i = 0; i <= 5; i++) {
+
+				nodos[i] = document.createElement("option");
+				nodos[i].setAttribute("value", i);
+				if (i!=0) {
+					nodos[i].innerHTML = i;
+				}else{
+					nodos[i].innerHTML = "";
+				}
+				
+				var cln = nodos[i].cloneNode(true);
+				document.getElementById("paris").appendChild(cln);
+				cln = nodos[i].cloneNode(true);
+				document.getElementById("londres").appendChild(cln);
+				cln = nodos[i].cloneNode(true);
+				document.getElementById("roma").appendChild(cln);
+				cln = nodos[i].cloneNode(true);
+				document.getElementById("madrid").appendChild(cln);
+				cln = nodos[i].cloneNode(true);
+				document.getElementById("berlin").appendChild(cln);
+
+			}
+
+			var lasSelect = document.getElementsByTagName("select");
+
+			for (let i = 0; i < lasSelect.length; i++) {
+				lasSelect[i].addEventListener("change", function (event) {
+					//console.log("la id: " + event.target.id);
+					//console.log("Tiene el valor de: " + event.target.value);
+					for (let k = 0; k < lasSelect.length; k++) {
+						//si el elementto tiene un id distinto al que he seleccionado
+						if (lasSelect[k].id != event.target.id) {
+							//En esta variable iran todos los elementos del desplegable
+							var opciones = document.getElementById(lasSelect[k].id).getElementsByTagName("option");
+							let longDesple = opciones.length;
+							//console.log("Longitud de: " + longDesple);
+							for (let t = 0; t < opciones.length; t++) {
+							
+								if (opciones[t].value == event.target.value) {
+									//console.log("t: " + t);
+									//console.log(opciones[t]);
+									opciones[t].remove();
+									//Una vez quehe borrado el elemento, ya no me interesa seguir con el bucle
+									//Y por eso salgo. pero no es imprescindible
+									break;
+								}
+								//console.log(t + " Longitud de: " + opciones.length);
+							}
+							
+						}
+					}
+					event.target.disabled = true;
+
+				});
+
+			}
+
+
+		}
+
+	</script>
+</body>
+
+</html>

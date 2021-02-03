@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>eventos_33 - Ejercicio: Sopa de letras (hacer y resolver)</title>
+	<style>
+		#tablero td {
+			height: 100px;
+			width: 100px;
+			border: 2px solid black;
+			text-align: center;
+			font-size: 80px
+		}
+
+		span {
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>eventos_33 - Ejercicio: Sopa de letras (hacer y resolver)</h1>
+	<hr />
+	<div id="c1">
+		Número de filas y columnas
+		<input type="number" min="5" max="15" step="1" id="filascolumnas" value="8" />
+		<br /><br />
+		<button onclick="iniciarJuego();" id="botonIniciar">Iniciar juego</button>
+	</div>
+
+	<br /><br />
+
+	<div id="c2" style="display:none">
+		Introducir palabra<br />
+		<input type="text" id="buscada" />
+		<button onclick="comprobarPalabra();">Probar palabra</button>
+		&nbsp;&nbsp;&nbsp;<span id="parrafo"></span>
+	</div>
+
+	<hr />
+	<table>
+		<tbody id="tablero">
+		</tbody>
+	</table>
+
+	<script type="text/javascript">
+		//Inicializo las variables a cero, ya lo cambiare despues con los datos que metan
+		var filascolumnas = 0;
+		var numeroCeldas = 0;
+		//Lo llamo desde el html
+		function iniciarJuego() {
+			var tablero = document.getElementById("tablero");
+			//Le doy el valor que le ponga en el input
+			filascolumnas = document.getElementById("filascolumnas").value;
+			//Como es cuadrado, pues el valor de las celdas es el cuadrado de las filas
+			numeroCeldas = filascolumnas * filascolumnas;
+
+			if (filascolumnas >= 5 && filascolumnas <= 15) {
+				//cambio las visibilidades
+				document.getElementById("c1").style.display = "none";
+				document.getElementById("c2").style.display = "inline";
+				//recorro las celdas
+				for (i = 0; i < numeroCeldas; i++) {
+					//Solo creo una fila si cumple esta condicion
+					if (i % filascolumnas == 0) {
+						fila = document.createElement("tr");
+						tablero.appendChild(fila);
+					}
+					//creo celdas y las hago arrastrables, y le doy un id
+					celda = document.createElement("td");
+					celda.setAttribute("draggable", true);
+					celda.id = i + 1;
+					//Estas son todas las letras que vamos a ir metiendo de modo aleatoria
+					var letras = "AABCDEEEFGHIIJKLMNÑOOPQRSTUUVWXYZ";
+					var indice = Math.floor(Math.random() * letras.length);
+					//En esa celda le meto la letra que haya salido de forma aletoria
+					contenidoCelda = document.createTextNode(letras[indice]);
+					celda.appendChild(contenidoCelda);
+					fila.appendChild(celda);
+
+					//EVENTOS
+					//FASE 1
+					celda.addEventListener("dragstart", function (pEvento) {
+						var idCelda = pEvento.target.id;
+						var columna = 0, fila = 0;
+						//La columna sera el restro entre la id que le hemos dado y el total de filas
+						var columna = idCelda % filascolumnas;
+						//Si da 0, quiere decir que esta la final de la columna
+						if (columna == 0) {
+							columna = filascolumnas;
+						}
+						//Este operando dara siempre un entero
+						fila = Math.ceil(idCelda / filascolumnas);
+						//Lo ponemos rojo al seleccionarlo, y ya veremos como quitamos ese color
+						pEvento.target.style.backgroundColor = "red";
+						//cogemos el id de lo que hemos comenzado a arrastrar
+						pEvento.dataTransfer.setData("", pEvento.target.id);
+
+						if (pEvento.altKey) {
+							//Esto se refiere para todo el ancho de la sopa de letras
+							for (i = 1; i <= filascolumnas; i++) {
+								//Siempre que sea distinto a la columna que estoy comenzando a arrastrar
+								if (i != columna) {
+									//Le cojo el hijo , que son filas, pues en el indice de fila menos uno, y de esa fila
+									//le cojo el hijo, que y aserá la celda, con ese indice, y le doy ese color raro
+									document.getElementById("tablero").children[fila - 1].children[i - 1].style.backgroundColor = "#F08080"
+								}
+							}
+						}
+
+						if (pEvento.ctrlKey) {
+							for (i = 1; i <= filascolumnas; i++) {
+								if (i != fila) {
+									//Esto lo pongo al reves, ya que el valor que quiero que permacezca fijo, es la columna
+									document.getElementById("tablero").children[i - 1].children[columna - 1].style.backgroundColor = "#F08080"
+								}
+							}
+						}
+					});
+
+
+					//FASE 2
+					celda.addEventListener("dragover", function (pEvento) {
+						pEvento.preventDefault();
+					});
+
+
+					//FASE 3
+					celda.addEventListener("drop", function (pEvento) {
+						//Aqui nos da el id de la celda que he comenzado a arrastrar
+						var celda1 = pEvento.dataTransfer.getData("");
+						//Y aqui nos da el id de la celda donde voy a depositarlo
+						var celda2 = pEvento.target.id;
+						//creo esta variable para luego reccorrer la lista y pintar todas de blanco
+						var celdas = document.getElementsByTagName("td");
+						for (i = 0; i < celdas.length; i++) {
+							celdas[i].style.backgroundColor = "white";
+						}
+
+						if (pEvento.altKey && !pEvento.ctrlKey) {
+							intercambiarFilas(obtenerFila(celda1), obtenerFila(celda2));
+						}
+
+						if (pEvento.ctrlKey && !pEvento.altKey) {
+							intercambiarColumnas(obtenerColumna(celda1), obtenerColumna(celda2));
+						}
+
+						if (!pEvento.altKey && !pEvento.ctrlKey)
+							intercambiarCeldas(celda1, celda2);
+					});
+				}
+
+
+				document.getElementsByTagName("body")[0].addEventListener("dragover", function (pEvento) {
+					pEvento.preventDefault();
+				});
+
+				//Esto es por si lo arrastro fuera de la sopa de letras, no se me queden ciertas
+				//celdas coloreadas
+				document.getElementsByTagName("body")[0].addEventListener("drop", function (pEvento) {
+					//Quiero decir, que si hago drop fuera de las celdas, me las ponga a blanco de 
+					//todos modos
+					if (pEvento.target.tagName != "TD") {
+						var celdas = document.getElementsByTagName("td");
+		
+						for (i = 0; i < celdas.length; i++) {
+							celdas[i].style.backgroundColor = "white";
+						}
+					}
+				});
+			}else if (filascolumnas<5) {
+				alert("son pocas columnas");
+				document.getElementById("filascolumnas").value="";
+			}else{
+				alert("son demasiadas columnas");
+				document.getElementById("filascolumnas").value="";
+			}
+		}
+
+
+		//INTERCAMBIO DE CELDAS
+		function intercambiarCeldas(numCelda1, numCelda2) {
+			//Estas dos variables las obtengo del drop, y son las que voy a intercambiar
+			var celda1 = document.getElementById(numCelda1);
+			var celda2 = document.getElementById(numCelda2);
+			//Para intercambiar necesito la variable temporal, porque sino, voy a perder el valor
+			var tempInner;
+
+			tempInner = celda1.innerHTML;
+			celda1.innerHTML = celda2.innerHTML;
+			celda2.innerHTML = tempInner;
+			//Dentro de esa funcion creada, usaré el setTime out. Esto es un extra para adornar
+			colorearCelda(numCelda1, "yellow", 400);
+			colorearCelda(numCelda2, "yellow", 400);
+		}
+
+		//INTERCAMBIO DE FILAS
+		//Como parametros le llega los ids dividido por el numero de filas de las celdas involucradas
+		function intercambiarFilas(numFila1, numFila2) {
+			var c1, c2;
+			var t = document.getElementById("tablero");
+			if (numFila1 != numFila2) {
+				//filas columna es lo que mete el usuario en el input. Asi que recorro las filas
+				//Luego a cada uno, le rebajo uno para sacarle su indice real
+				for (i = 1; i <= filascolumnas; i++) {
+					//Dentro de la misma fila, le recorro todos los elementos de la fila
+					//Y en cada vuelta le doy valor a c1 y a c2, que una esta encima de la otra
+					c1 = t.children[numFila1 - 1].children[i - 1].id;
+					c2 = t.children[numFila2 - 1].children[i - 1].id;
+					//Y una vez que les he dado valor, aqui las intercambio
+					intercambiarCeldas(c1, c2);
+				}
+			}
+		}
+
+		//INTERCAMBIO DE COLUMNAS
+		//Me han llegado dos columnas, y lo unico que tengo que hacer, es detectar todas sus celdas
+		//E intercambiarlas. Esas celdas siempre pertenecen a la misma columna
+		function intercambiarColumnas(numColumna1, numColumna2) {
+			var c1, c2;
+			var t = document.getElementById("tablero");
+			//Siempre que sean columnas distintas, sino, para que lo vas a hacer
+			if (numColumna1 != numColumna2) {
+				for (i = 1; i <= filascolumnas; i++) {
+					//Vemos que el que va cambiando es el numero de fila, y obtengo su id, para 
+					//luego intercambiarla
+					c1 = t.children[i - 1].children[numColumna1 - 1].id;
+					c2 = t.children[i - 1].children[numColumna2 - 1].id;
+					intercambiarCeldas(c1, c2);
+				}
+			}
+		}
+
+		function obtenerFila(celda) {
+			return Math.ceil(celda / filascolumnas);
+		}
+
+		function obtenerColumna(celda) {
+			//La columna será el resto entre el id que le metemos, y el numero de columnas que hemos elegido nosotros
+			var columna = celda % filascolumnas;
+			//Y si eso da 0, y sabemos que eso no puede ser, estara en el extremo de la fila, es 
+			//decir, en la ultima columna
+			if (columna == 0) {
+				columna = filascolumnas;
+			}
+			//nos devuelve el dato
+			return columna;
+		}
+
+		function colorearCelda(numCelda, color, tiempo) {
+			//Tomo la celda con ese id
+			var celda = document.getElementById(numCelda);
+			//Le pongo el color que luego le voy a quitar
+			celda.style.backgroundColor = color;
+			//Despues de el tiempo que le indique le vuelvo a poner el color blanco
+			if (tiempo > 0) {
+				setTimeout(function () {
+					celda.style.backgroundColor = "white";
+				}, tiempo);
+			}
+		}
+
+		function comprobarPalabra() {
+			//Paso a mayusculas la palabra que he metido
+			var buscada = document.getElementById("buscada").value.toUpperCase();
+			var palabras = [];
+			var numCelda;
+			var posicion = -1;
+			var cadena = "";
+			var contador = 0;
+			var t = document.getElementById("tablero");
+
+			//FILAS
+			var inicio = 0;
+			//Esta me recorre cada fila entera
+			for (i = 1; i <= filascolumnas; i++) {
+				//le meto, todas las letras de esta fila
+				cadena = "";
+				for (j = 1; j <= filascolumnas; j++) {
+					//la i es la fila, y la j la columna
+					cadena += t.children[i - 1].children[j - 1].innerHTML;
+				}
+
+				while (cadena.indexOf(buscada, inicio) != -1) {
+					//Le voy cambiando el incicio donde estoy buscando la palabra que le meti en el input
+					posicion = cadena.indexOf(buscada, inicio);
+					if (posicion != -1) {
+						//Esto es para ponerle despues, el numero de palabras que ha encontrado
+						contador++;
+						//una vez que sabemos que hay una, habra que localizarla para pintarla
+						//col sera posicion + 1, ya que la posicion, te devuelve el indice
+						for (col = posicion + 1; col < posicion + 1 + buscada.length; col++) {
+							//Aqui le saco el id de la celda que le quiero pintar
+							//La i es la fila que estoy analizando
+							numCelda = (i - 1) * filascolumnas + col;
+							colorearCelda(numCelda, "aqua", 3000);
+						}
+					}
+					//En el caso de encontrar una palabra, le cambio el inicio, para que busque aver si hay mas
+					//ya que por defecto, solo me va a devolver un valor
+					inicio = posicion + 1;
+				}
+			}
+
+			//COLUMNAS
+			inicio = 0;
+			for (j = 1; j <= filascolumnas; j++) {
+				cadena = "";
+				for (i = 1; i <= filascolumnas; i++) {
+					//la i es la fila, y la j la columna, que es la que permanece igual
+					cadena += t.children[i - 1].children[j - 1].innerHTML;
+				}
+
+				while (cadena.indexOf(buscada, inicio) != -1) {
+					//Nos da el endice del primer lugar donde la ha encontrado
+					posicion = cadena.indexOf(buscada, inicio);
+
+					if (posicion != -1) {
+						contador++;
+						for (fil = posicion + 1; fil < posicion + buscada.length + 1; fil++) {
+							numCelda = (fil - 1) * filascolumnas + j;
+							colorearCelda(numCelda, "aqua", 3000);
+						}
+					}
+					inicio = posicion + 1;
+				}
+			}
+			document.getElementById("parrafo").innerHTML = contador + " veces";
+		}
+
+	</script>
+</body>
+
+</html>

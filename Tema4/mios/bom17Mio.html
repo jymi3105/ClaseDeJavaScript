@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Poner una imagen en pantalla cambiandola cada 3 seg</title>
+</head>
+
+
+<script type="text/javascript">
+    var x = 0;
+    var imgs = ["'./recursos/img1.gif'", "'./recursos/img2.gif'", "'./recursos/img3.gif'"];
+    
+    //document.write("<img src='./recursos/img1.gif'><br />");
+    intervalo = setInterval(function () {
+        var myobj=document.getElementById("im");
+        console.log(myobj);
+        myobj.remove();
+        var img1="<img id='im' src=" + imgs[x] + ">";
+        document.write(img1);
+        if (x == 2) {
+            x = 0;
+        } else {
+            x++;
+        }
+        myobj=document.getElementById("im");
+
+    }, 3000);
+
+    function abrirImg() {
+        intervalo;
+    };
+</script>
+
+<body>
+
+    <body>
+        <h1>Poner una imagen en pantalla cambiandola cada 3 seg</h1>
+        <hr />
+        <img id="im" src="./recursos/img1.gif">
+    </body>
+
+</html>

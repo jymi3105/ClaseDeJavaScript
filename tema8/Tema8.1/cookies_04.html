@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>cookies_04 - Modificar cookies</title>
+	</head>
+	<body>
+		<h1>cookies_04 - Modificar cookies</h1>
+		<hr />
+		Nombre de la cookie a modificar
+		<input type="text" id="idclave" />
+		<br /><br />
+		Nuevo valor de la cookie
+		<input type="text" id="idvalor" />
+		<br /><br />
+		<p id="cookie"></p>
+		<button onclick="modificarCookie();">Modificar una cookie</button>
+
+		<script type="text/javascript">
+
+			function modificarCookie() {
+				document.cookie = document.getElementById("idclave").value + "=" + document.getElementById("idvalor").value;
+				document.getElementById("cookie").innerHTML=leerCookie(document.getElementById("idclave").value);
+			}
+
+			function leerCookie(clave) {
+			var resultado = "";
+			var busqueda = clave + "=";
+
+			var listCookies = document.cookie.split(';');
+			var par = "";
+
+			for (var i = 0; i < listCookies.length; i++) {
+				par = listCookies[i]; //Cada elemento del array de cookies: nombre de la cookie y carácter =
+
+				//Se quitan los espacios en blanco 
+				while (par.charAt(0) == ' ') {
+					par = par.substring(1);
+				}
+
+				//Se compara los que buscamos con el elemento del array. Si devuelve como índice 0 se ha encontrado
+				if (par.indexOf(busqueda) == 0) {
+					resultado = par.substring(busqueda.length, par.length);
+				}
+			}
+			return resultado;
+		}
+
+	
+		</script>
+	</body>
+</html>

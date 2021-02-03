@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio de clase con jquery</title>
+    <link rel="icon" type="image/x-icon" href="recursos/favicon.ico">
+    <script src="recursos/jquery-3.5.1.js"></script>
+</head>
+<style>
+    table,
+    td {
+        border: 1px solid black;
+    }
+</style>
+
+<body>
+    <h2>Ejercicio con la tablita</h2>
+    <hr>
+    <table>
+        <tr>
+            <td>A</td>
+            <td>B</td>
+            <td>C</td>
+            <td>D</td>
+            <td>E</td>
+        </tr>
+        <tr>
+            <td>F</td>
+            <td>G</td>
+            <td>H</td>
+            <td>I</td>
+            <td>J</td>
+        </tr>
+        <tr>
+            <td>K</td>
+            <td>L</td>
+            <td>M</td>
+            <td>N</td>
+            <td>Ñ</td>
+        </tr>
+        <tr>
+            <td>O</td>
+            <td>P</td>
+            <td>Q</td>
+            <td>R</td>
+            <td>S</td>
+        </tr>
+        <tr>
+            <td>T</td>
+            <td>U</td>
+            <td>V</td>
+            <td>W</td>
+            <td>X</td>
+        </tr>
+    </table>
+    <hr>
+    <div id="texto"></div>
+
+    <script>
+        var itd, itr;
+        var cadena = "";
+        /*console.log($("td:nth-child(5)").html());
+        console.log($("tr:nth-child(1) td:nth-child(1)").html());*/
+        $(function () {
+            $("tr").click(function (evento) {
+                itr = $(this).index();
+                console.log("el itr es " + itr);
+            })
+        });
+
+
+
+        $(function () {
+            // Selector.evento(funcion) --> funcion (ObjetoEvento)
+            $("td").click(function (evento) {
+                itd = $(this).index();
+                $("#texto").html($(this).html() + " " + itd + ", " + $("#texto").html());
+            });
+
+            /*$("tr").click(function (evento) {
+                $("#texto").html($(this).html() + " " + $("td").index(0));
+            });
+ cadena=$("tr:nth-child(itr) td:nth-child(itd)").html();
+        console.log(cadena);*/
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>

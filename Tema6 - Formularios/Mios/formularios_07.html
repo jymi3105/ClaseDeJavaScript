@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>formularios_07 - Ejercicio: Crear un formulario a partir de un JSON</title>
+</head>
+
+<body>
+	<h1>formularios_07 - Ejercicio: Crear un formulario a partir de un JSON</h1>
+	<hr />
+
+	Formulario<br />
+	<form id="formulario"></form>
+
+	<button onclick="crearFormulario()">Crear formulario</button><br />
+
+	<script type="text/javascript">
+
+		var datos = '{"campos":[\
+	{"id":"nombre","name":"nombre","type":"text","placeholder":"Escribe el nombre"},\
+	{"id":"clave","name":"clave","type":"password"},\
+	{"id":"mayorEdad","name":"mayorEdad","type":"checkbox","checked":"checked"},\
+	{"id":"modulo","name":"modulo","type":"radio","opciones":[\
+		{"value":"servidor","texto":"Prog.Servidor"},\
+		{"value":"cliente","texto":"Prog.Cliente"},\
+		{"value":"diseño","texto":"Diseño"}\
+	]},\
+	{"id":"descripcion","name":"descripcion","type":"textarea","placeholder":"Escribe la descripción"},\
+	{"id":"nacionalidades","name":"nacionalidades","type":"select","opciones":[\
+		{"value":"es","texto":"Española"},\
+		{"value":"fr","texto":"Francesa"},\
+		{"value":"de","texto":"Alemana"},\
+		{"value":"pt","texto":"Portuguesa"},\
+		{"value":"uk","texto":"Británica"}\
+	]}\
+	]}';
+		var objCampos = JSON.parse(datos);
+
+
+		function crearFormulario() {
+			//declaro y creo el form para insertarlo antes de los bucles
+			var form = document.createElement('form');
+			form.setAttribute("method", "post");
+			form.setAttribute("action", "");
+			document.body.appendChild(form);
+
+			//Dos elementos que creo para irlos insertando en el formulario durante los bucles
+			var br = document.createElement("br");
+			var FN;
+
+			objCampos.campos.forEach(a => {
+				if (a.type == "text" || a.type == "textarea") {
+					FN = document.createElement("input");
+					var lab = document.createElement("label");
+					var textoN = document.createTextNode(a.name.toUpperCase());
+					lab.appendChild(textoN);
+					FN.setAttribute("id", a.id);
+					FN.setAttribute("name", a.name);
+					FN.setAttribute("type", a.type);
+					FN.setAttribute("placeholder", a.placeholder);
+					form.appendChild(lab);
+					form.appendChild(FN);
+					form.appendChild(br.cloneNode());
+					FN.style.margin = "15px";
+				}
+				if (a.type == "checkbox") {
+					var lab = document.createElement("label");
+					var textoN = document.createTextNode("¿Es mayor de edad?");
+					lab.appendChild(textoN);
+
+					FN = document.createElement("input");
+					FN.setAttribute("id", a.id);
+					FN.setAttribute("name", a.name);
+					FN.setAttribute("type", a.type);
+					FN.setAttribute("checked", a.checked);
+					form.appendChild(FN);
+					form.appendChild(lab);
+					form.appendChild(br.cloneNode());
+					FN.style.margin = "15px";
+				}
+				if (a.type == "radio") {
+					div = document.createElement("div");
+					var lab = document.createElement("label");
+					var textoN = document.createTextNode(a.name.toUpperCase());
+					lab.appendChild(textoN);
+					div.appendChild(lab);
+					div.appendChild(br.cloneNode());
+					a.opciones.forEach(b => {
+						FN = document.createElement("input");
+						var lab = document.createElement("label");
+						var textoN = document.createTextNode(b.texto);
+						lab.appendChild(textoN);
+						FN.setAttribute("id", a.id + b.value);
+						FN.setAttribute("name", a.name);
+						FN.setAttribute("type", a.type);
+						FN.setAttribute("value", b.value);
+						FN.setAttribute("texto", b.texto);
+						div.appendChild(lab);
+						div.appendChild(FN);
+						FN.style.margin = "15px";
+					});
+					form.appendChild(div);
+					form.appendChild(br.cloneNode());
+
+				}
+
+				if (a.type == "select") {
+					var lab = document.createElement("label");
+					var textoN = document.createTextNode(a.name.toUpperCase());
+					lab.appendChild(textoN);
+					SE = document.createElement("select");
+					SE.setAttribute("id", a.id);
+					SE.setAttribute("name", a.name);
+					SE.setAttribute("type", a.type);
+
+					a.opciones.forEach(b => {
+						FN = document.createElement("input");
+						var optio = document.createElement("option");
+						var textoN = document.createTextNode(b.texto);
+						optio.appendChild(textoN);
+						FN.setAttribute("value", b.value);
+						FN.setAttribute("texto", b.texto);
+						SE.appendChild(optio);
+					});
+					form.appendChild(lab);
+					form.appendChild(SE);
+					form.appendChild(br.cloneNode());
+
+				}
+			});
+			form.style.border='2px dashed #E3620E';
+			form.style.padding = '70px';
+			form.style.backgroundColor = 'lightblue';
+			form.style.width = '50%';
+			SE.style.margin = "15px";
+			div.style.backgroundColor='pink';
+			div.style.width='90%';
+			div.style.padding='10px';
+			div.style.border='1px solid';
+		}
+
+	</script>
+</body>
+
+</html>

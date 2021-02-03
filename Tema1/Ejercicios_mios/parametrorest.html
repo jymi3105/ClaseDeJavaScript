@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio de arrays en clase</title>
+</head>
+
+<body>
+    <h1>parametro rest</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+    //Hacer una funcion que simule una concatenacion de elemnetos.
+    //Aqui al parametro rest lo llamo argumentos.
+    function funcion3(...argumentos){
+        var c="";
+        for (let i = 0; i < argumentos.length; i++) {
+            c += argumentos[i] + " ";
+            
+        }
+        return c;
+    }
+
+    console.log(funcion3("ana", "juan", "pedro", "jorge"));
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>formularios_16 - Ejercicio: Editar una selección de opciones</title>
+	</head>
+	<body>
+		<h1>formularios_16 - Ejercicio: Editar una selección de opciones</h1>
+		<hr />
+
+		Ciudad<br />
+		<input type="text" id="ciudad" />
+		<br /><br />
+
+		Código de ciudad<br />
+		<input type="text" id="codigociudad" />
+		<br /><br /><br />
+
+		<input type="radio" id="insertar" name="operacion" value="ins">Insertar
+		<br /><br />
+
+		<input type="radio" id="eliminar" name="operacion" value="eli">Eliminar
+		<br /><br />
+
+		<input type="radio" id="modificar" name="operacion" value="mod">Modificar
+		<br /><br />
+
+		<input type="checkbox" id="multiple" name="multiple" onchange="seleccionarMultiple();" />Selección múltiple
+		<br /><br />
+
+		<button onclick="procesar()">Procesar</button>
+
+		<hr />
+		<form id="formulario">
+
+			<select id="ciudades">
+			</select>
+
+		</form>
+
+		<script type="text/javascript">
+		
+			function seleccionarMultiple() {
+				var ciudades = document.getElementById("ciudades");
+	
+				if(document.getElementById("multiple").checked)	{
+					if(!ciudades.hasAttribute("multiple")) {
+						ciudades.setAttribute("multiple","multiple");
+						ciudades.setAttribute("size","4");
+					}
+				} else {
+					if(ciudades.hasAttribute("multiple")) {
+						ciudades.removeAttribute("multiple");
+						ciudades.removeAttribute("size");
+					}
+				}
+			}
+
+
+			function procesar()	{
+				if(document.getElementById("insertar").checked)	{
+					var opcion = document.createElement("option");
+					//Hemos creado una opcion, y a continuacion le plantamos un id
+					//Al final hemos puesto value, porque lo tomamos de un input
+					opcion.setAttribute("value",document.getElementById("codigociudad").value);
+					//Creamos un nodo texto, y lo sacamos del input de ciudad
+					var texto = document.createTextNode(document.getElementById("ciudad").value);
+					//Metemos el texto en la opcion
+					opcion.appendChild(texto);
+					//Y en el desplegable total, le metemos la opcion, con todo lo que le habiamos metido antes
+					document.getElementById("ciudades").appendChild(opcion);
+				}
+	
+				if(document.getElementById("eliminar").checked)	{
+					var indice = document.getElementById("ciudades").selectedIndex;
+					
+	
+					var nodoEliminar = document.getElementById("ciudades").children[indice];
+					//Siempre hay que borrarlo desde su padre
+					document.getElementById("ciudades").removeChild(nodoEliminar);
+				}
+	
+				if(document.getElementById("modificar").checked) {
+					var indice = document.getElementById("ciudades").selectedIndex;
+					console.log(indice);
+					//Del desplegabla, nos quedamos con el que hayamos seleccionado
+					var nodoModificar = document.getElementById("ciudades").children[indice];
+					//le ponemos el nuevo value, que es el que tenemos en la cajita de codigociudad
+					nodoModificar.value = document.getElementById("codigociudad").value;
+					//le cascamos también en la etiqueta que vemos, el nuevo valor que hemos visto en la cajita
+					nodoModificar.innerHTML = document.getElementById("ciudad").value;
+				}
+			}
+		
+		</script>
+	</body>
+</html>
+

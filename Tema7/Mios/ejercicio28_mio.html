@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>eventos_28 - Ejercicio: Validar un formulario seleccionando el campo a validar</title>
+	<style>
+		td {
+			border: 2px solid red;
+			padding: 5px;
+		}
+
+		div {
+			border: 2px solid black;
+			padding: 1cm;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>eventos_28 - Ejercicio: Validar un formulario seleccionando el campo a validar</h1>
+	<hr />
+
+	<table>
+		<tr id="fila">
+			<td id="nombre">NOMBRE</td>
+			<td id="matricula">MATRÍCULA</td>
+			<td id="puntuacion">PUNTUACIÓN</td>
+			<td id="telefono">TELÉFONO</td>
+		</tr>
+	</table>
+
+	<div id="cuadroentrada">
+		<h2>Zona de inserción de datos</h2>
+		Introduce el campo <span id="titulocampo"></span>
+		<br />
+		<input type="text" id="entrada" />
+		<br />
+		<button id="validacion">Validar</button>
+	</div>
+
+	<div id="cuadrovisualizar">
+		Ver datos de la persona<br />
+		<button>Ver datos</button>
+		<select id="persona">
+			<option value="">Elige</option>
+			<option value="0" id="p0"></option>
+			<option value="1" id="p1"></option>
+		</select>
+		<ul id="datospersona"></ul>
+	</div>
+
+	<script type="text/javascript">
+
+		var datos = [];
+		var nNombres = 0;
+		var nMatricula = 0;
+		var nNotas = 0;
+		var nTelefono = 0;
+		var nDatos = 0;
+		function iniciar() {
+			document.getElementById("cuadrovisualizar").style.display = "none";
+		};
+
+		document.getElementsByTagName("body")[0].addEventListener("load", iniciar());
+		
+		document.getElementById("validacion").addEventListener("click", validar);
+
+		var cuadros = document.getElementById("fila").children;
+		for (let i = 0; i < cuadros.length; i++) {
+			cuadros[i].setAttribute("draggable", true);
+			cuadros[i].addEventListener("dragstart", function fase1(event) {
+				event.dataTransfer.setData("", event.target.id);
+				//console.log(event.target.id);
+			});
+		};
+		document.getElementById("cuadroentrada").addEventListener("dragover", function (event) {
+			event.preventDefault();
+			//console.log("Actuando el prevent");
+		});
+
+		document.getElementById("cuadroentrada").addEventListener("drop", function (pEvent) {
+			var datosC = pEvent.dataTransfer.getData("");
+			document.getElementById("titulocampo").innerHTML = datosC;
+		});
+
+		document.getElementsByTagName("button")[1].setAttribute("id", "verdatos");
+
+		document.getElementById("persona").addEventListener("change", cambiar);
+
+		function cambiar() {
+			lista = document.getElementById("datospersona");
+			var c = "";
+			var li;
+			var elementosLista = 0
+			elementosLista = document.getElementById("datospersona").getElementsByTagName("li").length;
+			console.log(elementosLista);
+			if (elementosLista != 0) {
+				for (let i = 0; i < elementosLista; i++) {
+					document.getElementById("datospersona").removeChild(document.getElementById("datospersona").childNodes[0]);
+				}
+			}
+
+			if (document.getElementById("persona").value == "0") {
+				li = document.createElement("li");
+				c = document.createTextNode("nombre: " + datos[0]);
+				li.appendChild(c);
+				lista.appendChild(li);
+
+				li = document.createElement("li");
+				c = document.createTextNode("Matricula: " + datos[1]);
+				li.appendChild(c);
+				lista.appendChild(li);
+
+				li = document.createElement("li");
+				c = document.createTextNode("Nota: " + datos[2]);
+				li.appendChild(c);
+				lista.appendChild(li);
+
+				li = document.createElement("li");
+				c = document.createTextNode("Telefono: " + datos[3]);
+				li.appendChild(c);
+				lista.appendChild(li);
+			}
+			if (document.getElementById("persona").value == "1") {
+				li = document.createElement("li");
+				c = document.createTextNode("nombre: " + datos[4]);
+				li.appendChild(c);
+				lista.appendChild(li);
+
+				li = document.createElement("li");
+				c = document.createTextNode("Matricula: " + datos[5]);
+				li.appendChild(c);
+				lista.appendChild(li);
+
+				li = document.createElement("li");
+				c = document.createTextNode("Nota: " + datos[6]);
+				li.appendChild(c);
+				lista.appendChild(li);
+
+				li = document.createElement("li");
+				c = document.createTextNode("Telefono: " + datos[7]);
+				li.appendChild(c);
+				lista.appendChild(li);
+			}
+
+		}
+
+		function validar() {
+			var titulocampo = document.getElementById("titulocampo").innerHTML;
+			var entrada = document.getElementById("entrada").value;
+
+			if (titulocampo == "nombre") {
+				if (entrada != "") {
+					var exp = /^[A-Za-z\s]+$/;
+					if (exp.test(entrada)) {
+						if (nNombres == 0) {
+							datos[0] = entrada;
+							nNombres++;
+							nDatos++;
+							document.getElementById("nombre").style.borderColor = "blue";
+							document.getElementById("p0").innerHTML = entrada;
+						} else {
+							datos[4] = entrada;
+							document.getElementById("nombre").style.display = "none";
+							nDatos++;
+							document.getElementById("p1").innerHTML = entrada;
+							console.log(datos);
+						}
+
+					}
+				} else {
+					alert("Completa el campo");
+				}
+			}
+
+			if (titulocampo == "matricula") {
+				if (entrada != "") {
+					exp = /^\d{4}\w{3}$/;
+					if (exp.test(entrada)) {
+						if (nMatricula == 0) {
+							datos[1] = entrada;
+							nMatricula++;
+							nDatos++;
+							document.getElementById("matricula").style.borderColor = "blue";
+						} else {
+							datos[5] = entrada;
+							document.getElementById("matricula").style.display = "none";
+							nDatos++;
+							console.log(datos);
+						}
+
+					}
+				} else {
+					alert("Completa el campo");
+				}
+			}
+
+			if (titulocampo == "puntuacion") {
+				if (entrada != "") {
+					exp = /^\d{1,2}$/;
+					if (exp.test(entrada) && entrada <= 10) {
+						if (nNotas == 0) {
+							datos[2] = entrada;
+							nNotas++;
+							nDatos++;
+							document.getElementById("puntuacion").style.borderColor = "blue";
+						} else {
+							datos[6] = entrada;
+							document.getElementById("puntuacion").style.display = "none";
+							nDatos++;
+							console.log(datos);
+						}
+
+					}
+				} else {
+					alert("Completa el campo");
+				}
+			}
+
+			if (titulocampo == "telefono") {
+				if (entrada != "") {
+					exp = /^(6|7|9)\d{8}$/;
+					if (exp.test(entrada)) {
+						if (nTelefono == 0) {
+							datos[3] = entrada;
+							nTelefono++;
+							nDatos++;
+							document.getElementById("telefono").style.borderColor = "blue";
+						} else {
+							datos[7] = entrada;
+							document.getElementById("telefono").style.display = "none";
+							nDatos++;
+							console.log(datos);
+						}
+					} else {
+						alert("no cumple el formato");
+					}
+				} else {
+					alert("Completa el campo");
+				}
+			}
+
+			if (nDatos == 8) {
+				document.getElementById("cuadrovisualizar").style.display = "block";
+				document.getElementById("cuadroentrada").style.display = "none";
+
+			}
+
+			//FALTA LA VALIDACION DEL TELEFONO
+
+			document.getElementById("titulocampo").innerHTML = "";
+			document.getElementById("entrada").value = "";
+		}
+
+	</script>
+
+</body>
+
+</html>

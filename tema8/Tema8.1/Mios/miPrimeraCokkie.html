@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miPrimera Cookie</title>
+</head>
+
+<body>
+    <button onclick="ponerUnaCookie()">Poner una coockie</button>
+
+    <script type="text/javascript">
+        function ponerUnaCookie(clave, valor, dias = 0) {
+            var miCookie = "";
+            if (dias > 0) {
+                var fecha = new Date();
+                fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
+                var expires = "expires=" + fecha.toUTCString();
+                miCookie = clave + "=" + valor + ";" + expires;
+            } else {
+                miCookie = clave + "=" + valor;
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

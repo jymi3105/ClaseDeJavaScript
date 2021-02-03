@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+Introduce el nombre de la clave:
+    <input type="text" id="clave">
+    <br><br>
+    Introduce su valor
+    <input type="text" id="valor">
+ <br><br>
+ <button onclick="obtenerValor()">Obtener valor</button>
+ <br><br>
+<button onclick="ponerClaveValor()">Poner valor</button>
+<br><br>
+<button onclick="modificarPropiedad()">Modifica Valor</button>
+ 
+    <script type="text/javascript">
+        function ponerClaveValor() {
+            var c=document.getElementById("clave").value;
+            var v=document.getElementById("valor").value;
+            window.localStorage.setItem(c,v);
+            localStorage.setItem(c,v);
+            c=document.getElementById("clave").value="";
+            v=document.getElementById("valor").value="";
+        }
+
+        function obtenerValor() {
+            var c=document.getElementById("clave").value;
+            alert(window.localStorage.getItem(c));
+        }
+
+        function modificarPropiedad() {
+            window.localStorage.ciudad="Valladolid";
+            localStorage["color"]="verde";
+            alert(localStorage.ciudad + " - " + localStorage["color"]);
+        }
+
+
+    </script>
+</body>
+</html>

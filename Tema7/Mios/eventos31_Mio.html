@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>eventos_31 - Ejercicio: Hacer la lotería primitiva</title>
+    <style>
+        td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        #parrafonumeros {
+            font-size: 40px;
+            color: blue;
+        }
+
+        #mark {
+            font-size: 40px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>eventos_31 - Ejercicio: Hacer la lotería primitiva</h1>
+    <hr />
+
+    <span id="mark">X</span>
+    <table border="3">
+        <tbody id="lotery">
+        </tbody>
+    </table>
+    <p id="parrafonumeros"></p>
+    <button>Comprobare</button>
+    <button><a href="eventos31_Mio.html">VOLVER A JUGAR</a></button>
+
+    <script type="text/javascript">
+        document.getElementsByTagName("body")[0].addEventListener("load", createTable());
+        document.getElementsByTagName("button")[1].style.display = "none";
+        var fila;
+        var columna;
+        var numero;
+        var spanTd;
+        var clnSpan;
+        var textoNodo;
+        var cuadroLoteria;
+        var cruz;
+        var nCruces;
+        var misNumeros;
+        var numerosPremiados;
+        var boton;
+        var aciertos;
+        var fallos;
+
+        function createTable() {
+            aciertos = 0;
+            fallos = 0;
+            misNumeros = [];
+            numerosPremiados = [];
+            for (let i = 0; i < 6; i++) {
+                n = Math.ceil(Math.random() * 49);
+                if (numerosPremiados.indexOf(n) == -1) {
+                    numerosPremiados.push(n);
+                } else {
+                    i--;
+                }
+            }
+            nCruces = 0;
+            cruz = document.getElementById("mark");
+            cruz.setAttribute("draggable", true);
+            boton = document.getElementsByTagName("button")[0]
+            document.getElementsByTagName("button")[0].id = "comprobar";
+            boton.addEventListener("click", comprobar);
+            cruz.addEventListener("dragstart", function (event) {
+                event.dataTransfer.setData("", event.target.id);
+            });
+            cuadroLoteria = document.getElementById("lotery");
+            numero = 1;
+            fila = document.createElement("tr");
+            columna = document.createElement("td");
+            spanTd = document.createElement("span");
+
+            for (let i = 0; i < 10; i++) {
+                var cln = fila.cloneNode(true);
+                cuadroLoteria.appendChild(cln);
+
+            }
+            filas = document.getElementsByTagName("tr");
+            for (let i = 0; i < 5; i++) {
+                for (let t = 0; t < 10; t++) {
+                    if (i == 0 && t == 0) {
+                        cln = columna.cloneNode(true);
+                        clnSpan = spanTd.cloneNode(true);
+                        cln.appendChild(clnSpan);
+                        filas[t].appendChild(cln);
+                        filas[t].getElementsByTagName("td")[0].style.backgroundColor = "red";
+
+                    } else {
+                        cln = columna.cloneNode(true);
+                        clnSpan = spanTd.cloneNode(true);
+                        textoNodo = document.createTextNode(numero.toString());
+                        clnSpan.appendChild(textoNodo);
+                        cln.appendChild(clnSpan);
+                        filas[t].appendChild(cln);
+                        numero++;
+                        clnSpan.addEventListener("dragover", function (event) {
+                            event.preventDefault();
+                        });
+                        clnSpan.addEventListener("drop", (evento) => midrop(evento));
+                    }
+                }
+            }
+
+        };
+
+        function midrop(event) {
+            var nuevaCruz = event.dataTransfer.getData("", event.target.id);
+            var clonado = document.getElementById(nuevaCruz).cloneNode(true);
+            if (nCruces < 6) {
+                misNumeros.push(event.target.innerHTML);
+
+                //Esta instrucion la sustituyo por esta: event.target.parentNode.removeChild(event.target);
+                // event.target.innerHTML = "";
+                event.target.parentNode.appendChild(clonado);
+                event.target.parentNode.removeChild(event.target);
+                clonado.removeAttribute("draggable");
+                nCruces++;
+                document.getElementById("parrafonumeros").innerHTML = misNumeros + "<br />";
+            } else {
+                alert("ya has selecccionado numero de cruces suficientes");
+            }
+        }
+
+        function comprobar() {
+            if (nCruces == 6) {
+
+                for (let i = 0; i < misNumeros.length; i++) {
+                    //Lo tengo que parsear, porque sino de primeras me va a dar un string
+                    if (numerosPremiados.indexOf(parseInt(misNumeros[i])) == -1) {
+                        fallos++;
+                    } else {
+                        aciertos++;
+                        console.log(numerosPremiados.indexOf(parseInt(misNumeros[i])));
+                    }
+                }
+                document.getElementById("parrafonumeros").innerHTML += numerosPremiados + "<br />" + "Fallos: " + fallos + " aciertos: " + aciertos;
+                boton.disabled = true;
+                document.getElementsByTagName("button")[1].style.display = "block";
+            } else {
+                alert("selecciona tus numeros primero");
+            }
+        }
+
+    </script>
+</body>
+
+</html>

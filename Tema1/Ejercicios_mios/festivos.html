@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>saca los festivos en color rojo.</title>
+</head>
+
+<body>
+    <h2>Festivos en rojo</h2>
+    <script type="text/javascript">
+        var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        var fechaInicio = new Date();
+        var fecha2 = new Date(2020, 9, 7);
+        fecha2 = fecha2.toLocaleDateString('es-ES', opciones);
+        fechaInicio = fechaInicio.toLocaleDateString('es-ES', opciones);
+
+        var festivos = [
+            new Date(2021, 0, 1),
+            new Date(2021, 0, 6),
+            new Date(2021, 3, 23),
+            new Date(2021, 4, 1),
+            new Date(2021, 4, 13),
+            new Date(2021, 6, 25),
+            new Date(2021, 8, 8),
+            new Date(2021, 9, 12),
+            new Date(2021, 10, 1),
+            new Date(2021, 11, 6),
+            new Date(2021, 11, 8),
+            new Date(2021, 11, 25),
+        ]
+
+        //Esto es para convertirlo a la forma de verlo en España
+        for (let i = 0; i < festivos.length; i++) {
+            festivos[i] = festivos[i].toLocaleDateString('es-ES', opciones);
+            console.log(festivos[i]);
+        }
+        
+        var anyo = 2021;
+        var diaSemana = 0;
+        /*            document.write('<tr><td colspan=7></td></tr>');*/
+        var diasMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        document.write('<table border=1>')
+        for (let mes = 0; mes < diasMes.length; mes++) {
+            document.write('<tr><th colspan=31>' + meses[mes] + '</th></tr>');
+            document.write('<tr>');
+            for (let dia = 1; dia <= diasMes[mes]; dia++) {
+                fechaRecorriada=new Date(anyo, mes, dia).toLocaleDateString('es-ES', opciones);
+                if (festivos.indexOf(fechaRecorriada)==-1) {
+                    document.write('<td>dia:' + dia + ' mes: ' + mes + '</td>');
+                } else {
+                    document.write('<td style="background-color: red;">dia:' + dia + ' mes: ' + mes + '</td>');
+                }
+
+            }
+            document.write('</tr>');
+        }
+        document.write('</table>')
+
+    </script>
+
+
+</body>
+
+</html>

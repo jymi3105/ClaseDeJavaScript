@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>lenguaje_31 - Arrays: Recorrer un array</title>
+</head>
+
+<body>
+    <h1>Mi ejercicio de map sacado de mozcilla developer</h1>
+    <hr />
+    <h3>Ver consola</h3>
+
+    <script type="text/javascript">
+        var numbers = [1, 5, 10, 15];
+        var doubles = numbers.map(function (x) {
+            return x * 2;
+        });
+        console.log(doubles);
+        // doubles is now [2, 10, 20, 30]
+        // numbers is still [1, 5, 10, 15]
+
+        var numbers = [1, 4, 9];
+        var roots = numbers.map(function (num) {
+            return Math.sqrt(num);
+        });
+        console.log(roots);
+
+        //Dar la vuelta a una cadena
+        var str = '12345';
+       console.log([].map.call(str, function (x) {
+            return x;
+        }).reverse().join(''));
+
+        console.log(str);
+    </script>
+</body>
+
+</html>
