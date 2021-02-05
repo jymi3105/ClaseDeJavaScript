@@ -28,30 +28,49 @@
 
     <button id="cambiar">Cambiar</button><br><br>
     <table id="tabla" border="1">
-        <tr>
-            <td>DNI</td>
-            <td>NOMBRE</td>
-            <td>edad</td>
-        </tr>
+        <tbody>
+            <tr>
+                <td>DNI</td>
+                <td>NOMBRE</td>
+                <td>edad</td>
+            </tr>
+        </tbody>
     </table>
     <p></p>
     <script>
         $("button").click(function () {
-            var dni = $("#dni").val();
-            var nombre = $("#nombre").val();
-            var edad = $("#edad").val();
-            if (dni != "") {
-                $("#tabla").append("<tr><td>" + dni + "</td><td>" + nombre + "</td><td>" + edad + "</td></tr>");
-                pintar();
-            } else {
-                alert("Pon el dni");
+            var existe = false;
+            var dni = $("#dni").val().toUpperCase();
+            var nombre = $("#nombre").val().toUpperCase();
+            var edad = $("#edad").val().toUpperCase();
+
+            $("#tabla tbody").children("tr").each(function (indice, valor) {
+                if (indice != 0) {
+                    if (dni == $(this).children("td").eq(0).text().toUpperCase()) {
+
+                        $(this).children("td").eq(1).text(nombre);
+                        $(this).children("td").eq(2).text(edad);
+                        existe = true;
+                    }
+                }
+            });
+            if (!existe) {
+                $("#tabla > tbody").append("<tr><td>" + dni + "</td><td>" + nombre + "</td><td>" + edad + "</td></tr>");
+                $("#tabla > tbody").children("tr").last().children("td").each(function (i) {
+                   $(this).on("click", {x:i}, function (evento) {
+                      console.log(evento.data.x); 
+                   });
+                });
             }
+
+
+
         });
         function pintar() {
             $("table tr:not(:first) td:first").click(function () {
                 alert($(this).text());
             });
-            
+
             $("table tr:not(:first) td").css("backgroundColor", "yellow");
         }
     </script>

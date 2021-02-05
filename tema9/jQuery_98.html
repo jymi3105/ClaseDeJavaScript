@@ -44,7 +44,7 @@
 
 		<table id="datos">
 			<tbody id="bodydatos">
-				<tr><td>DNI</td><td>NOMBRE</td><td>EDAD</td></tr>
+				<tr><th>DNI</th><th>NOMBRE</th><th>EDAD</th></tr>
 				
 			</tbody>
 		</table>
@@ -61,32 +61,40 @@
 					$("#edad").val("");
 					var existe = false;
 
-
+//ESTO SE LO APLICO A LOS HIJOS, QUE SON LAS CELDAS DE LOS TBODIES QUE ESTAN DENTRO DE #DATOS
+//Y SE LO HACES A CADA UNO, QUE LO VA INDICANDO LOS INDICES
 					$("#datos > tbody").children("tr").each(function(indice,texto) {
+						//EL INDICE TE DA LA LA FILA QUE MIRA, Y EVITAS LA PRIMERA QUE LA DE INDICE 
+						//0 QUE LA DE LA CABECERA
 						if(indice!=0) {
+							//CONTROLAS QUE LA VARIABLE DNI EXISTA EN LA PRIMERA COLUMNA
 							if(dni==$(this).children("td").eq(0).text().toUpperCase()) {
 								existe = true;
+								//EN CADA CELDA LE SOBREESCRIVAS LO DE LAS VARIABLES
 								$(this).children("td").eq(1).text(nombre);
 								$(this).children("td").eq(2).text(edad);
 							}
 						}
 					});
 
-					
+					//EN EL CASO DE QUE NO EXISTA, CREAS LA FILA, Y LA INSERTAS
 					if(!existe) {
 						var stringHTML = "";
 						stringHTML += "<td>" + dni + "</td>";
 						stringHTML += "<td>" + nombre + "</td>";
 						stringHTML += "<td>" + edad + "</td>";
+						//ESTO LO INSERTA AL FINAL DE LA TABLA
 						$("#datos > tbody").append("<tr>"+stringHTML+"</tr>");
 
-
+							//PONEMOS EL EVENTO A  CADA CELDA DE LA ULTIMA FILA QUE ES LA QUE 
+							//ACABAMOS DE AÑADIR
 						$("#datos > tbody").children("tr").last().children("td").each(function(i) {
 							$(this).on("click", {x:i}, function(evento) {
+								//alert("evento.data: " + evento.data + " evento.data.x: " + evento.data.x)
 								if(evento.data.x!=0) {
 									//Animación
-									$(this).animate({fontSize:"48px"},1000).animate({borderWidth:"15px"},1000).fadeOut(1000).fadeIn(1000);
-									$(this).animate({fontSize:"18px"},1000).animate({borderWidth:"2px"},1000);
+									$(this).animate({fontSize:"48px"},500).animate({borderWidth:"15px"},500).fadeOut(500).fadeIn(500);
+									$(this).animate({fontSize:"18px"},500).animate({borderWidth:"2px"},500);
 
 									//Escribir en los input
 									$("#dni").val($(this).parent("tr").children("td").eq(0).text());

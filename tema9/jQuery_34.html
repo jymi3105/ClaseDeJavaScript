@@ -57,6 +57,7 @@
 
 				$("#boton5").click(function (){
 					$("p").toggleClass(function (indice,claseactual) {
+						console.log(indice + ": " + claseactual);
 						if(indice==3 || indice==6){
 							if(claseactual=="colorRojo") {
 								return "fuenteArial";
