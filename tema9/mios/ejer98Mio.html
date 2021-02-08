@@ -57,22 +57,43 @@
             if (!existe) {
                 $("#tabla > tbody").append("<tr><td>" + dni + "</td><td>" + nombre + "</td><td>" + edad + "</td></tr>");
                 $("#tabla > tbody").children("tr").last().children("td").each(function (i) {
-                   $(this).on("click", {x:i}, function (evento) {
-                      console.log(evento.data.x); 
-                   });
+                    $(this).on("click", { x: i }, function (evento) {
+                        console.log(evento.data.x);
+                        if (evento.data.x != 0) {
+                            $(this).animate({
+                                width: "150px",
+                                opacity: 0.4,
+                                marginLeft: "20px",
+                                fontSize: "3em",
+                                borderWidth: "10px"
+                            }, 1500).fadeOut("slow", function () {
+                                console.log("desaparece");
+                            }).fadeIn("fast", function () {
+                                $(this).css({ "backgroundColor": "blue" });
+                                $("#dni").val($(this).parents().children().eq(0).text());
+                                $("#nombre").val($(this).parents().children().eq(1).text());
+                                $("#edad").val($(this).parents().children().eq(2).text());
+                                //console.log($(this).parents().children().eq(2).text());
+                            }).animate({
+                                width: "100px",
+                                opacity: 1,
+                                marginLeft: "5px",
+                                fontSize: "1em",
+                                borderWidth: "1px"
+                            }, 1500).fadeIn("fast", function () {
+                                $(this).css({ "backgroundColor": "white" });
+                            });
+                        }else{
+                            $(this).parent().remove();
+                        }
+                    });
                 });
             }
 
 
 
         });
-        function pintar() {
-            $("table tr:not(:first) td:first").click(function () {
-                alert($(this).text());
-            });
-
-            $("table tr:not(:first) td").css("backgroundColor", "yellow");
-        }
+       
     </script>
 </body>
 

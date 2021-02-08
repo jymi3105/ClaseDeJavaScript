@@ -87,11 +87,14 @@
 
 
 			$(function (){
-				$("#tabla1 tr").on("click","td:even",function(event) {
+				//LE APLICO EL EVENTO CLICK A LOS TR DE LA TABLA1, Y DENTRO SELECCIONO A LOS TD, LOS PARES
+				$("#tabla1 tr").on("click","td:even",function() {
+					//AQUI CLONO A SU PADRE QUE ES EL TR Y QUE NO HACE FALTA PONERLO, Y SE LO AGREGO
 					$(this).parent("tr").clone().appendTo("#tabla1 tbody"); //Sin clonar eventos
 					//$(this).parent("tr").clone(true).appendTo("#tabla1 tbody"); //Clonando eventos y el efecto es el mismo para las filas creadas
 				});
 
+				//OTRA MANERA DE AGREGAR UN EVENTO
 				$("#tabla1 tr td:odd").click(function(event) {
 					$("#tabla1 tr:last").remove();
 				});

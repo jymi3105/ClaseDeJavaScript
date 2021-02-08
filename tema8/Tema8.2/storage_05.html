@@ -4,6 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>storage_05 - localStorage: parámetros del evento storage</title>
+	<script src="recursos/jquery-3.5.1.js"></script>
 </head>
 
 <body>
@@ -31,10 +32,12 @@
 		//Lo mismo que lo explicado en el ejercicio 5_A
 		window.addEventListener("storage", function (pEvento) {
 			var c = "";
+			c += $('#parrafo').html();
 			c += "Clave: " + pEvento.key + "<br />";
 			c += "Valor antiguo: " + pEvento.oldValue + "<br />";
 			c += "Valor nuevo: " + pEvento.newValue + "<br />";
-			document.getElementById("parrafo").innerHTML += c;
+			$("#parrafo").html(c);
+			//document.getElementById("parrafo").innerHTML += c;
 		});
 
 		function ponerValor() {

@@ -32,8 +32,10 @@
 			
 			$(function (){
 				$("button").click(function() {
-					$("div.primero").slideUp(2000).fadeIn(600);
-					$("div.segundo").slideUp(2000).delay(2000).slideDown(600);
+					$("div.primero").slideUp(2000).fadeIn(600).delay(2000).fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300, function () {
+						$(this).css("background-color", "red");
+					});
+					$("div.segundo").slideUp(2000).delay(2000).slideDown(600).fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
 				});
 			});
 

@@ -10,6 +10,7 @@
 				border: 3px solid black;
 				width: 150px;
 				height: 250px;
+				padding: 50px;
 				background-color: yellow;
 			}
 		</style>
@@ -34,6 +35,7 @@
 				$("#b1").click(function () {
 					//show (velocidad,funcion) --> Velocidad: slow, normal, fast, milisegundos
 					$("div,img").show(5000,function () {
+						$("div,img").css("background-color","blue");
 						$("div,img").css("border","25px solid black"); //Se ejecuta al final del efecto
 					});
 					$("div,img").css("border","25px solid red"); //Se ejecuta durante el efecto

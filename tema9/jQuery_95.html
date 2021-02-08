@@ -43,34 +43,35 @@
 		<script type="text/javascript">
 
 			$(document).ready(function(){
+				//INSERTO UN ELEMENTO DE ENLACE AL PRINCIPIO DEL BODY
 				$('<a id="top" name="top"></a>').prependTo('body');
 
 				
 				var num_parrafos = $("p").length;
 				$("#contenido").before('<h2>Hay ' + num_parrafos + ' párrafos</h2>');
 
-				
+				//ES LA MANERA DE ESTABLECER UN ANCLA,  Y LO ESTABLEZCO AL PRINCIPIO DE TODOS LOS PARRAFOS
 				$("p").before(function(i,v) {
-					return "<a name=\"parrafo" + (++i) + "\"></a>";
+					return "<a name='parrafo" + (++i) + "'></a>";
 				});
 
-				
+				//ESTABLEZCO UN TITULO
 				$("p").before(function(i,v) {
 					return "<h3>Párrafo " + (++i) + "</h3>";
 				});
 
-
+				//PONGO UN ENLACE ARRIBA AL FINAL DE CADA PARRAFO
 				$("p").after("<a href='#top'>Parte alta de la página</a><hr /><br /><br />");
 
-
+				//AQUI PONGO EL ENLACE DE AVANZAR PERO NO EN LOS ULTIMOS PARRAFOS
 				$("p").after(function(i,v) {
 					if(i<num_parrafos-2)
 						return "<a href=\"#parrafo" + (i+3) + "\">Avanzar hasta el párrafo" + (i+3) + "</a><br />";
 				});
 
-
+				//AQUI PONGO EL ENLACE DE RETROCEDER A PARTIR DEL TERCER PARRAFO
 				$("p").after(function(i,v) {
-					if(i>1)
+					if(i>2)
 						return "<a href=\"#parrafo" + (i-1) + "\">Retroceder hasta el párrafo" + (i-1) + "</a><br />";
 				});
 
