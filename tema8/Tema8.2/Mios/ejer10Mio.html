@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>storage_10 - Ejercicio: pasar un formulario a otra página</title>
+	<style>
+		td {
+			border: 2px solid black;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>storage_10 - Ejercicio: pasar un formulario a otra página</h1>
+	<hr />
+
+	Nombre<input type="text" id="firstname" required="required" /><br /><br />
+
+	Apellidos<input type="text" id="lastname" required="required" /><br /><br />
+
+	Fecha de nacimiento<input type="date" id="birthdate" required="required" /><br /><br />
+
+	Dirección<br />
+	calle<input type="text" id="street" required="required" />&nbsp;&nbsp;Número<input type="number" id="housenumber"
+		required="required" /><br /><br />
+
+	Módulos<br />
+	<select id="modulos" size="5" multiple="multiple" required="required">
+		<option value="programacion">Programación</option>
+		<option value="redes">Redes de ordenadores</option>
+		<option value="sistemas">Sistemas operativos</option>
+		<option value="bases">Bases de datos</option>
+		<option value="marcas">Lenguajes de marcas</option>
+		<option value="ofimatica">Ofimática</option>
+		<option value="fol">FOL</option>
+	</select>
+	<br /><br />
+
+	Cursará FCT<input type="checkbox" id="fct" /><br /><br />
+
+	<button onclick="send();">Enviar</button>
+
+	<script type="text/javascript">
+		function send() {
+			var student = {};
+			var modulos = [];
+			student.nombre = document.getElementById("firstname").value;
+			student.apellidos = document.getElementById("lastname").value;
+			student.fNacimiento = document.getElementById("birthdate").value;
+			student.direccion = {};
+			student.direccion.calle = document.getElementById("street").value;
+			student.direccion.numero = document.getElementById("housenumber").value;
+			for (let i = 0; i < document.getElementById("modulos").options.length; i++) {
+				if (document.getElementById("modulos").options[i].selected) {
+					modulos.push(document.getElementById("modulos").options[i].innerText);
+				}
+			}
+			student.asignaturas=modulos;
+			if(document.getElementById("fct").checked){
+				student.practitas=true;
+			}else{
+				student.practitas=false;
+			}
+			var studentInfo=JSON.stringify(student);
+
+			console.log(studentInfo);
+			localStorage.setItem("student", studentInfo);
+		}
+	</script>
+</body>
+
+</html>

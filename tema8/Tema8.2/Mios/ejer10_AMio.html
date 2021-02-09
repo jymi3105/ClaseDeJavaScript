@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>storage_10_A hecho por mi</title>
+    <style>
+        .inserciones {
+            background-color: aqua;
+            border: 2px dashed grey;
+            box-shadow: 5px 5px 5px brown;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            display: none;
+        }
+    </style>
+    <script src="recursos/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <h1>storage_10_A hecho por mi - Ejercicio: pasar un formulario a otra página</h1>
+    <hr />
+
+    <div id="studentInfo"></div>
+
+
+    <script type="text/javascript">
+        window.addEventListener("storage", function () {
+           
+            var studentInfo;
+            var studentObj = {};
+            studentInfo = localStorage.getItem("student");
+            studentObj = JSON.parse(studentInfo);
+           // console.log(studentObj);
+            var nombre = studentObj.nombre;
+            var apellidos = studentObj.apellidos;
+            var fNacimiento = studentObj.fNacimiento;
+            var calle = studentObj.direccion.calle;
+            var numero = studentObj.direccion.numero;
+            var asignaturas = studentObj.asignaturas;
+            var practicas = studentObj.practicas;
+
+            var inserccion = "<div class='inserciones'><p>Nombre: " + nombre +
+                "</p><p>Apellidos: " + apellidos + "</p><p>Fecha de nacimiento: " + fNacimiento +
+                "</p><p>calle: " + calle + "</p><p>Numero de portal: " + numero + "</p>";
+
+            for (let i = 0; i < asignaturas.length; i++) {
+                inserccion += "<p>Asignatura Nº" + (i + 1) + ": " + asignaturas[i] + " </p>";
+
+            }
+
+            if (practicas) {
+                inserccion += "<p>Practicas: Realizadas</p></div>";
+            } else {
+                inserccion += "<p>Practicas: Estan por realizar</p></div>";
+            }
+
+
+            $("#studentInfo").html($("#studentInfo").html() + inserccion);
+            $(".inserciones").fadeIn(3000, function () {
+                console.log("ya esta");
+            });
+        });
+        
+
+    </script>
+</body>
+
+</html>
