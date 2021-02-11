@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Parte_C del Examen</title>
+    <style>
+        .inserciones {
+            background-color: aqua;
+            border: 2px dashed grey;
+            box-shadow: 5px 5px 5px brown;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            display: block;
+        }
+
+        table,
+        th,
+        td {
+            border: 2px solid black;
+            font-Size: 18px;
+        }
+    </style>
+    <script src="recursos/jquery-3.3.1.js"></script>
+</head>
+
+<body>
+    <h1>Parte_C del Examen</h1>
+    <hr />
+
+    <button id="transferir">PASAR DATOS</button>
+    <br><br>
+
+
+    <div id="socioInfo"></div>
+    <table id="datos">
+        <tbody id="bodydatos">
+            <tr>
+                <th>DNI</th>
+                <th>NOMBRE</th>
+                <th>DIRECCION</th>
+                <th>SEXO</th>
+                <th>PREMIUM</th>
+            </tr>
+            <tr>
+                <td>84397753</td>
+                <td>MIRANDA</td>
+                <td>C KAS</td>
+                <td>MASCULINO</td>
+                <td>TRUE</td>
+            </tr>
+            <tr>
+                <td>32412378</td>
+                <td>TOMAS</td>
+                <td>C DEL RIO</td>
+                <td>MASCULINO</td>
+                <td>TRUE</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <br><br>
+
+    <button id="activar" onclick="activarJquery()">ACTIVAR JQUERY</button>
+
+
+    <script type="text/javascript">
+
+        document.getElementById("transferir").onclick = function () {
+            var bd = evento.target.result;
+
+            var transaccionInsertar = bd.transaction(bd.objectStoreNames, "readwrite");
+            var almacenInsertar = transaccionInsertar.objectStore("socios");
+            var nuevoSocio = {};
+
+            nuevoSocio.dni = parseInt(document.getElementById("isbn").value);
+            nuevoSocio.nombre = document.getElementById("titulo").value;
+            nuevoSocio.direccion = document.getElementById("autor").value;
+            nuevoSocio.sexo = document.getElementById("editorial").value;
+            nuevoSocio.premium = parseInt(document.getElementById("paginas").value);
+
+
+            almacenInsertar.add(nuevoSocio);
+        }
+
+
+
+
+        function activarJquery() {
+            //document.getElementById("activar").disabled = false;
+            document.getElementsByTagName("script")[0].setAttribute("src", "recursos/jquery-3.3.1.js");
+
+        }
+        $("#bodydatos > tr > th").each(function (i) {
+            $("#bodydatos > tr > th").on("click", { x: i }, function (evento) {
+                var indice = $(this).index();
+
+                $("#bodydatos tr:first").children().each(function (x) {
+                    //console.log(evento.data.x);
+                    $("#bodydatos > tr").each(function () {
+                        $(this).children().eq(indice).css("backgroundColor", "aqua");
+                    });
+                });
+                $("#bodydatos > tr > th").css("backgroundColor", "white");
+            });
+        });
+
+
+        /* $("#bodydatos > tr > th").each(function (i) {
+             $(this).on("click", {x:i}, function(evento) {
+                 $("#bodydatos > tr > td").each(function (i) {
+                     $("#bodydatos > tr > td:eq(" + i +")").css("backgroundColor", "aqua");
+                 });
+                 //css("backgroundColor", "aqua");
+             //alert(evento.data.x);
+             });
+         });*/
+
+        $("#bodydatos > tr > th").dblclick(function () {
+            $("td").css("backgroundColor", "white");
+            // alert("hola");
+        });
+        $("#bodydatos > tr > td").click(function () {
+            $(this).css("backgroundColor", "yellow");
+
+        });
+        $("#bodydatos > tr > td:first").click(function () {
+            $(this).parent().remove();
+
+        });
+
+        window.addEventListener("storage", function () {
+
+            var socioInfo;
+            var socioObj = {};
+            socioInfo = localStorage.getItem("socio");
+            socioObj = JSON.parse(socioInfo);
+            // console.log(studentObj);
+            var dni = socioObj.dni;
+            var nombre = socioObj.nombre;
+            var direccion = socioObj.direccion;
+            var sexo = socioObj.sexo;
+            var premium = socioObj.premium;
+
+
+            var inserccion = "<div class='inserciones'><p id='dni'>" + dni +
+                "</p><p id='nombre'>" + nombre + "</p><p id='direccion'>" + direccion +
+                "</p><p id='sexo'>" + sexo + "</p>";
+
+
+            if (premium) {
+                inserccion += "<p id ='premium'>true</p></div>";
+            } else {
+                inserccion += "<p id ='premium'>false</p></div>";
+            }
+            //alert(inserccion);
+
+            document.getElementById("socioInfo").innerHTML = inserccion;
+
+            // $("#socioInfo").html($("#socioInfo").html() + inserccion);
+            $(".inserciones").fadeIn(3000, function () {
+                console.log("ya esta");
+            });
+        });
+
+        function listaSocios() {
+		if (window.indexedDB) {
+			peticion = window.indexedDB.open("examen");
+
+			peticion.onsuccess = function (evento) {
+				bd = evento.target.result;
+
+				transaccion = bd.transaction(bd.objectStoreNames, "readwrite");
+				almacen = transaccion.objectStore("socios");
+
+				var peticionCursor = almacen.openCursor();
+				peticionCursor.onsuccess = function (evento) {
+					var cursor = peticionCursor.result;
+
+					if (cursor) {
+						insertarElemento(cursor.value);
+
+						cursor.continue(); //continue incrementa el cursor una posición
+					} else {
+						console.log("FIN");
+					}
+				}
+
+			};
+
+
+			peticion.onerror = function (evento) {
+				alert("No se ha creado la base de datos: " + event.target.errorCode);
+			};
+
+
+			peticion.onupgradeneeded = function (evento) {
+				console.log("Upgradeneeded");
+			};
+
+		} else {
+			console.log("IndexedDB no está soportado");
+		}
+
+		//document.getElementById("botonCargar").disabled = true;
+	}
+
+    function insertarElemento(socio) {
+		//var htmlTexto = libro.isbn + "  <----->  " + libro.titulo;
+		var htmlTexto = _libro.titulo;
+		
+		
+		listaItem.textContent = htmlTexto;
+
+		var tabla = document.getElementById("bodydatos");
+		lista.appendChild(listaItem);
+
+		listaItem.onclick = function () {
+			var isbn = lista.options[lista.selectedIndex].value;
+			console.log("isbn: " + isbn);
+			var transaccionEvento = bd.transaction(bd.objectStoreNames, "readwrite");
+			var almacenEvento = transaccionEvento.objectStore("libros");
+			var registroEvento = almacenEvento.get(parseInt(isbn));
+			
+			registroEvento.onsuccess = function (evento) {
+				console.log(registroEvento.result);
+				document.getElementById("isbn").value = registroEvento.result.isbn;
+				
+            }
+		}
+	}
+
+
+    </script>
+</body>
+
+</html>
