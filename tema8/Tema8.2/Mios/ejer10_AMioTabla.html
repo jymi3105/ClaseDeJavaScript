@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>storage_10_A hecho por mi</title>
+    <style>
+        .inserciones {
+            background-color: aqua;
+            border: 2px dashed grey;
+            box-shadow: 5px 5px 5px brown;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            display: none;
+        }
+    </style>
+    <script src="recursos/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <h1>storage_10_A hecho por mi - Ejercicio: pasar un formulario a otra página</h1>
+    <hr />
+
+    <table id="tabla" border="1">
+        <tbody>
+            <tr>
+                <td>NOMBRE</td>
+                <td>APELLIDOS</td>
+                <td>FECHA NACIMIENTO</td>
+                <td>CALLE</td>
+                <td>NUMERO</td>
+                <td>ASIGNATURAS</td>
+                <td>PRACTICAS</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <script type="text/javascript">
+        window.addEventListener("storage", function () {
+            var existe = false;
+            var studentInfo;
+            var studentObj = {};
+            studentInfo = localStorage.getItem("student");
+            studentObj = JSON.parse(studentInfo);
+            var nombre = studentObj.nombre.toUpperCase();
+            var apellidos = studentObj.apellidos.toUpperCase();
+            var fNacimiento = studentObj.fNacimiento.toUpperCase();
+            var calle = studentObj.direccion.calle.toUpperCase();
+            var numero = studentObj.direccion.numero.toUpperCase();
+            var asignaturas=[];
+            for (let i = 0; i < studentObj.asignaturas.length; i++) {
+                asignaturas += "<p>" + studentObj.asignaturas[i] + "</p>";
+                
+            }
+            var practicas;
+            if(studentInfo.practicas){
+            practicas = "REALIZADAS";
+            }else{
+                practicas="NO REALIZADAS";
+            }
+
+            $("#tabla tbody").children("tr").each(function (indice, valor) {
+                if (indice != 0) {
+                    if (nombre == $(this).children("td").eq(0).text().toUpperCase()) {
+
+                        $(this).children("td").eq(1).text(apellidos);
+                        $(this).children("td").eq(2).text(fNacimiento);
+                        $(this).children("td").eq(3).text(calle);
+                        $(this).children("td").eq(4).text(numero);
+                        $(this).children("td").eq(5).html(asignaturas);
+                        $(this).children("td").eq(6).text(practicas);
+                        existe = true;
+                    }
+                }
+            });
+
+            if (!existe) {
+                $("#tabla > tbody").append("<tr><td>" + nombre + "</td><td>" + apellidos + "</td><td>" + fNacimiento + "</td><td>" + calle + "</td><td>" + numero + "</td><td>" + asignaturas + "</td><td>" + practicas + "</td></tr>");
+                $("#tabla > tbody").children("tr").last().children("td").each(function (i) {
+                    $(this).on("click", { x: i }, function (evento) {
+                        console.log(evento.data.x);
+                        if (evento.data.x != 0) {
+                            $(this).animate({
+                                width: "150px",
+                                opacity: 0.4,
+                                marginLeft: "20px",
+                                fontSize: "3em",
+                                borderWidth: "10px"
+                            }, 1500).fadeOut("slow", function () {
+                                console.log("desaparece");
+                            }).fadeIn("fast", function () {
+                                $(this).css({ "backgroundColor": "blue" });
+
+                            }).animate({
+                                width: "100px",
+                                opacity: 1,
+                                marginLeft: "5px",
+                                fontSize: "1em",
+                                borderWidth: "1px"
+                            }, 1500).fadeIn("fast", function () {
+                                $(this).css({ "backgroundColor": "white" });
+                            });
+                        }else{
+                            $(this).parent().remove();
+                        }
+                    });
+                });
+            }
+
+
+
+            /*
+            var inserccion = "<div class='inserciones'><p>Nombre: " + nombre +
+                "</p><p>Apellidos: " + apellidos + "</p><p>Fecha de nacimiento: " + fNacimiento +
+                "</p><p>calle: " + calle + "</p><p>Numero de portal: " + numero + "</p>";
+            for (let i = 0; i < asignaturas.length; i++) {
+                inserccion += "<p>Asignatura Nº" + (i + 1) + ": " + asignaturas[i] + " </p>";
+            }
+            if (practicas) {
+                inserccion += "<p>Practicas: Realizadas</p></div>";
+            } else {
+                inserccion += "<p>Practicas: Estan por realizar</p></div>";
+            }
+            $("#studentInfo").html($("#studentInfo").html() + inserccion);
+            $(".inserciones").fadeIn(3000, function () {
+                console.log("ya esta");
+            });
+            */
+        });
+        
+
+    </script>
+</body>
+
+</html>

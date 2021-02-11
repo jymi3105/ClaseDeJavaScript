@@ -74,10 +74,15 @@
 
 				$("#b2").click(function () {
 					$("body ul").remove();
+					//DE LA TABLA, TOMO LA PRIMIRA FILA, ME DESPLAZO A SU HIJO, Y x ES EL QUE LO RECORRE
+					//EL OBJETIVO DEL FIRST ES QUE SOLO RECORRA UNA VEZ LA FILA
 					$("table tr:first").children().each(function(x) {
+						//LE AGREGO UNA LISTA AL FINAL DE MI BODY
 						$("body").append("<ul>");
+							//ME DESPLAZO HASTA LAS FILAS. LA I RECORRE CADA CELDA, Y LA X CADA FILA
 						$("table tr").each(function(i) {
-							$("body ul:last").append("<li>" + $(this).children().eq(x).text() + "</li>");
+							//DENTRO DEL ULTIMO UL, LE AGREGO AL FINAL
+							$("body ul:last").append("<li>" + $(this).children().eq(x).text() + ", x: " + x + ", i: " + i + "</li>");
 						});
 					});
 					$("#titulo").html("<h2>Una lista por cada columna de la tabla</h2>");

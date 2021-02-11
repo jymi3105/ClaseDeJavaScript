@@ -45,9 +45,9 @@
 
 			$(document).ready(function(){
 				$('ul.hover_bloc li').hover(function(){
-					$(this).find('img').animate({left:'300px'},{duration:500});
+					$(this).find('img').animate({left:'300px', top:'200px'},{duration:500});
 					}, function(){
-					$(this).find('img').animate({left:'8px'},{duration:500});
+					$(this).find('img').animate({left:'8px', top:'8px'},{duration:800});
 				});
 			});
 
