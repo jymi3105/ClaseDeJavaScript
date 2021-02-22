@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>PARTE_B.Examen de Jorge Miranda Izcara</title>
+    <style>
+        td {
+            border: 2px solid black;
+        }
+    </style>
+    <script src="recursos/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <h1>PARTE_B. Examen de Jorge Miranda Izcara</h1>
+    <hr />
+
+    DNI: <input type="text" id="dni" required="required" /><br /><br />
+
+    Nombre: <input type="text" id="nombre" required="required" /><br /><br />
+
+    Direccion: <input type="text" id="direccion" required="required" /><br /><br />
+    Sexo: Masculino: <input id="masculino" type="radio" name="sexo" value="Masculino">
+    Femenino: <input id="femenino" type="radio" name="sexo" value="Femenino"><br><br>
+
+    Premium: <input type="checkbox" id="premiun" /><br /><br />
+
+    <button onclick="enviar();">Enviar</button><br><br>
+
+    <div id="transferido"></div>
+    <a href="parte_C.html">Abrir en la siguiente pantalla</a>
+    <script type="text/javascript">
+        function enviar() {
+            var socio = {};
+            socio.dni = document.getElementById("dni").value;
+            socio.nombre = document.getElementById("nombre").value;
+            socio.direccion = document.getElementById("direccion").value;
+            if (document.getElementById("masculino").checked) {
+                socio.sexo = "Masculino";
+            } else if (document.getElementById("femenino").checked) {
+                socio.sexo = "Femenino";
+            }
+            //alert(socio.sexo);
+            if (document.getElementById("premiun").checked) {
+                socio.premium = true;
+            } else {
+                socio.premium = false;
+            }
+            var socioInfo = JSON.stringify(socio);
+
+            //console.log(socioInfo);
+            localStorage.setItem("socio", socioInfo);
+        }
+    </script>
+</body>
+
+</html>
