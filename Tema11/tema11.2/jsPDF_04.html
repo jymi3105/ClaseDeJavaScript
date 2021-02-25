@@ -21,6 +21,12 @@
 				pdf.lines([[0,0],[150,15]],0,0); //Origen 0,0
 				pdf.lines([[0,0],[150,25]],10,10); //Origen 10,10
 
+				pdf.setTextColor(200,50,70);
+				pdf.setFontSize(30);
+				pdf.setFont("courier","bold");
+				pdf.text(30,50,"Lineas a cascoporro");
+
+
 				pdf.lines([[0,0],[10,60],[20,0],[30,10],[40,0]],0,0); //Cada punto es respecto al anterior
 				
 				//ESCALA
@@ -30,11 +36,22 @@
 				pdf.lines([[0,0],[10,10],[20,0],[30,10],[40,0]],40,140,[-0.25,-0.25]);
 
 				//ESTILO
+				pdf.setTextColor(200,150,70);
+				pdf.setFontSize(30);
+				pdf.setFont("courier","bold");
+				pdf.text(40,180,"Lineas con estilo");
+
 				pdf.lines([[0,0],[100,10]],40,160,[1,1],'S');			
 				pdf.lines([[0,0],[100,10]],40,180,[1,1],'F'); //No se ve
 				pdf.lines([[0,0],[100,10]],40,200,[1,1],'DF');
 
 				//CLOSED
+				pdf.setTextColor(80,150,170);
+				pdf.setFontSize(30);
+				pdf.setFont("courier","bold");
+				
+				pdf.text(25,255,"Lineas cerradas y sin cerrar");
+				pdf.text(5,275,"El true o false es lo que cierra");
 				pdf.lines([[0,0],[10,10],[0,20]],40,220,[1,1],'S',false);
 				pdf.lines([[0,0],[10,10],[0,20]],80,220,[1,1],'S',true);
 				pdf.lines([[0,0],[10,10],[0,20]],120,220,[1,1],'F',true);
